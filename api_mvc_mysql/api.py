@@ -62,17 +62,6 @@ try:
         else:
             return jsonify({"result":"error inserting data"})
 
-
-# To check insert_documents_data
-# {
-#   "text_id":"2",
-#   "date":"02",
-#   "author":"bsc",
-#   "source":"web",
-#   "collection":"col2",
-#   "language":"es"
-# }
-
 except:
     msg = 'Error'
     print(msg)
@@ -82,3 +71,17 @@ except:
 # ----------------------------------------------------------------------
 if __name__=="__main__":                      
     app.run()    
+
+
+
+# To check insert_documents_data route in postman or thunder client. 
+# Specify the route and add the following data in json format:
+
+# {
+#   "text_id":"2",
+#   "date":"02",
+#   "author":"bsc",
+#   "source":"web",
+#   "collection":"col2",
+#   "language":"es"
+# }

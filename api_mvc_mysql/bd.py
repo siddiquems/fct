@@ -1,12 +1,18 @@
+# ----------------------------- CONNECTION WITH DATABASE ----------------------------------
+# This file have a function called get_connection to connect to the database
+
+
 # Import
 import pymysql
 
 # Function Get connection with database
+# -----------------------------------------------------------------------------------------
 def get_connection():
     return pymysql.connect( host='localhost', user= 'username', passwd='password', db='fct')
 
 
 # For testing here
+# -----------------------------------------------------------------------------------------
 conn = pymysql.connect( host='localhost', user= 'username', passwd='password', db='fct')
 
 # Cursor
