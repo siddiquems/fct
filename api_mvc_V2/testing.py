@@ -9,13 +9,18 @@ from application.models.model import *
 
 # --------------- Testing model
 # OKK
-# insert_doc_data('2', '2', 'bsc', 'web', 'col2', 'en')
+# insert_doc_data('5', '4', 'bsc', 'woljwc', 'col2', 'en')
 # delete_doc_data('1')
 
 # OKK
 # insert_cor_data('1', 'corpus_name_1', 'c22', 'this is a corpus', 'v2', '5')
 # delete_cor_data('1')
 
+
+# --------------- Testing Document Model
+from application.models.Document import *
+print(select_where('2'))
+# insert_doc_data('5', '4', 'bsc', 'woljwc', 'col2', 'en')
 # ---------------- Testing database
 from application.config.database import get_connection
 
@@ -29,3 +34,5 @@ from application.config.database import get_connection
 # Testing controller
 import application.controllers.api as contr
 
+# Testing controller documents
+import application.controllers.controller_documents as Document

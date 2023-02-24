@@ -1,0 +1,24 @@
+crear backend para cada elemento
+separar-los
+
+un model para cada elemento
+model documents, model corpus
+
+
+separar controladores
+
+separara rutas
+
+
+- TESTING
+testear con testings
+
+test unitarios en flask
+libreria unittest
+
+import unittest
+
+
+- LOGIN
+google authentification
+
