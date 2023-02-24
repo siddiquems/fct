@@ -19,8 +19,12 @@ from application.models.model import *
 
 # --------------- Testing Document Model
 from application.models.Document import *
-print(select_where('2'))
+# print(select_documents())
+# print(select_where('2'))
 # insert_doc_data('5', '4', 'bsc', 'woljwc', 'col2', 'en')
+update_doc_data('1', '4', 'b', 'woljwc', 'col2', 'en')
+
+
 # ---------------- Testing database
 from application.config.database import get_connection
 

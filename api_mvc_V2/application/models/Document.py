@@ -18,9 +18,9 @@ def select_documents():
         # execute command
         cursor.execute("select * from documents")
 
-    # commit and close the connection
-    conexion.commit()
-    conexion.close()
+    # fetchall and return the data
+        data = cursor.fetchall()
+        return data
     
 
 # Function to select a document by id
@@ -33,11 +33,11 @@ def select_where(textid):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("SELECT * FROM fct.documents WHERE text_id = %s", textid)
+        cursor.execute("SELECT * FROM documents WHERE text_id = %s", textid)
 
     # commit and close the connection
-    conexion.commit()
-    conexion.close()
+        data = cursor.fetchall()
+        return data
 
 
 # Function to insert data in documents table
@@ -58,6 +58,25 @@ def insert_doc_data(textid, date, author, source, collection, language):
     # commit and close the connection
     conexion.commit()
     conexion.close()
+
+
+def update_doc_data(textid, date, author, source, collection, language):
+
+    # get connection
+    conexion = get_connection()
+
+    # cursor
+    with conexion.cursor() as cursor:
+
+        # execute command
+        cursor.execute("UPDATE documents SET date=%s, author=%s, source=%s, collection=%s, language=%s WHERE text_id=%s",
+                    (date, author, source, collection, language, textid))
+
+    # commit and close the connection
+    conexion.commit()
+    print(cursor.rowcount, "record(s) updated")
+    return cursor.rowcount
+    # conexion.close()
 
 
 # To delete data in documents table

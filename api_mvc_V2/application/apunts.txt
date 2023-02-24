@@ -1,9 +1,10 @@
+- MVC
+# ..........................................................................
 crear backend para cada elemento
 separar-los
 
 un model para cada elemento
 model documents, model corpus
-
 
 separar controladores
 
@@ -11,6 +12,7 @@ separara rutas
 
 
 - TESTING
+# ..........................................................................
 testear con testings
 
 test unitarios en flask
@@ -20,5 +22,19 @@ import unittest
 
 
 - LOGIN
+# ..........................................................................
 google authentification
 
+- authentification with users
+x usuario tenga control de acciones
+
+2 options.
+google authentification, and store users in bbdd
+
+Capa de usuarios
+- Admin (ALL CRUD options)
+- Anotador (interacturar con anotaciones, solo puede ver lo que tiene asignado)
+- Invitador (only READ, no edit. Solo puede acceder a una parte de la app)
+
+Tabla de usuarios en la bd:
+Datos de usuario, y role de cada usuario
