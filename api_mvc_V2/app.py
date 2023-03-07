@@ -1,6 +1,15 @@
 from flask import Flask
 from application import app
 
+# Configparser settings
+# --------------------------------------------------
+import configparser
+
+
+parameters = config = configparser.ConfigParser()
+parameters.read('./configuration.cfg')
+
+
 # Main function
 # ----------------------------------------------------------------------
 if __name__=="__main__":                      

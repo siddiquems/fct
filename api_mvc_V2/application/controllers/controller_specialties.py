@@ -3,14 +3,14 @@ from application import app
 from flask import Flask,jsonify,request
 
 # Import documents model
-import application.models.Document as Document
+import application.models.Specialty as Specialty
 
 
-@app.route('/documents', methods=['GET'])
-def select_documents_data():
-    c = Document.select_documents()
+@app.route('/specialties', methods=['GET'])
+def select_specialties_data():
+    c = Specialty.select_specialties()
 
-    # If the documents are available, show them. Otherwise error message
+    # If the specialties are available, show them. Otherwise error message
     if c!=None:
         return jsonify({"result":c})
     else:
@@ -20,11 +20,11 @@ def select_documents_data():
 
 # Route to select a document by id
 # -------------------------------------------------------------
-@app.route('/documents/<string:id>', methods=['GET'])
-def select_document_by_id(id):
+@app.route('/specialties/<string:id>', methods=['GET'])
+def select_specialty_by_id(id):
     # text_id = request.json["text_id"]
 
-    c = Document.select_where(id)
+    c = Specialty.select_where(id)
 
     # If the document data is available, return them
     if c!=None:
@@ -34,21 +34,18 @@ def select_document_by_id(id):
         return jsonify({"result":"no data"})
 
 
-# Route to insert data in documents table
+# Route to insert data in specialties table
 # ----------------------------------------------------------------------
-@app.route('/documents', methods=['POST'])
-def insert_documents_data():
+@app.route('/specialties', methods=['POST'])
+def insert_specialties_data():
 
     # Get data in json format
-    text_id = request.json["text_id"]
-    date = request.json["date"]
-    author = request.json["author"]
-    source = request.json["source"]
-    collection = request.json["collection"]
-    language = request.json["language"]
+    specialty_id = request.json["specialty_id"]
+    name = request.json["name"]
+    description = request.json["description"]
 
     # Use the function in model
-    c = Document.insert_doc_data(text_id, date, author, source, collection, language)
+    c = Specialty.insert_spec_data(specialty_id, name, description)
     
     # If the insert was successful, return the okey msg
     if c==1:
@@ -58,7 +55,7 @@ def insert_documents_data():
         return jsonify({"result":"error inserting data"})
 
 # Tests
-# URL: http://127.0.0.1:5000/documents
+# URL: http://127.0.0.1:5000/specialties
 # Method: POST
 
 # JSON:
@@ -74,50 +71,44 @@ def insert_documents_data():
 
 # Route to insert data in documents table  - No funcionality
 # ----------------------------------------------------------------------
-@app.route('/documents/<string:id>', methods=['PUT'])
-def update_documents_data(id):
+@app.route('/specialties/<string:specialty_id>', methods=['PUT'])
+def update_specialties_data(specialty_id):
 
     # Get data in json format
     # text_id = request.json["text_id"]
-    date = request.json["date"]
-    author = request.json["author"]
-    source = request.json["source"]
-    collection = request.json["collection"]
-    language = request.json["language"]
+    name = request.json["name"]
+    description = request.json["description"]
 
     # Use the function in model
-    c = Document.update_doc_data(id, date, author, source, collection, language)
+    c = Specialty.update_spec_data(specialty_id,name, description)
     
-    # If the insert was successful, return the okey msg
+    # If the update was successful, return the okey msg
     if c ==1:
         return jsonify({"result":"okey updating data"})
     else:
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: http://127.0.0.1:5000/documents/1
+# URL: 127.0.0.1:5000/specialties/5
+# POST
 
 # JSON:
 # {
-#   "date":"02",
-#   "author":"bscsss",
-#   "source":"web",
-#   "collection":"cosssl2",
-#   "language":"es"
-# }
+# "name":"errfe",
+# "description":"otros"}
 
 
 # Delete a document by id
 # --------------------------------------------------------------------
-@app.route("/documents/<string:id>", methods=['DELETE'])
-def delete_document_data(id):
+@app.route("/specialties/<string:specialty_id>", methods=['DELETE'])
+def delete_specialty_data(specialty_id):
     # text_id = request.json["text_id"]
-    c = Document.delete_doc_data(id)
+    c = Specialty.delete_spec_data(specialty_id)
     
     # If the document was deleted, return succes message, else error message
     if c==1:
         return jsonify("okey deleted")
     else:
-        return jsonify("no document deleted")
+        return jsonify("no specialty deleted")
 
-# Test with URL: http://127.0.0.1:5000/documents/5
+# Test with URL: http://127.0.0.1:5000/specialties/5

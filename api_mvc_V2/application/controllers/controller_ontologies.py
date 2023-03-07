@@ -3,12 +3,12 @@ from application import app
 from flask import Flask,jsonify,request
 
 # Import documents model
-import application.models.Document as Document
+import application.models.Ontology as Ontology
 
 
-@app.route('/documents', methods=['GET'])
-def select_documents_data():
-    c = Document.select_documents()
+@app.route('/ontologies', methods=['GET'])
+def select_ontologies_data():
+    c = Ontology.select_ontologies()
 
     # If the documents are available, show them. Otherwise error message
     if c!=None:
@@ -20,11 +20,11 @@ def select_documents_data():
 
 # Route to select a document by id
 # -------------------------------------------------------------
-@app.route('/documents/<string:id>', methods=['GET'])
-def select_document_by_id(id):
+@app.route('/ontologies/<string:ontology_id>', methods=['GET'])
+def select_ontology_by_id(ontology_id):
     # text_id = request.json["text_id"]
 
-    c = Document.select_where(id)
+    c = Ontology.select_where(ontology_id)
 
     # If the document data is available, return them
     if c!=None:
@@ -36,19 +36,18 @@ def select_document_by_id(id):
 
 # Route to insert data in documents table
 # ----------------------------------------------------------------------
-@app.route('/documents', methods=['POST'])
-def insert_documents_data():
+@app.route('/ontologies', methods=['POST'])
+def insert_ontologies_data():
 
     # Get data in json format
-    text_id = request.json["text_id"]
-    date = request.json["date"]
-    author = request.json["author"]
-    source = request.json["source"]
-    collection = request.json["collection"]
+    ontology_id = request.json["ontology_id"]
+    name = request.json["name"]
+    version = request.json["version"]
     language = request.json["language"]
+    description = request.json["description"]
 
     # Use the function in model
-    c = Document.insert_doc_data(text_id, date, author, source, collection, language)
+    c = Ontology.insert_ont_data(ontology_id, name, version, language, description)
     
     # If the insert was successful, return the okey msg
     if c==1:
@@ -74,19 +73,18 @@ def insert_documents_data():
 
 # Route to insert data in documents table  - No funcionality
 # ----------------------------------------------------------------------
-@app.route('/documents/<string:id>', methods=['PUT'])
-def update_documents_data(id):
+@app.route('/ontologies/<string:ontology_id>', methods=['PUT'])
+def update_ontologies_data(ontology_id):
 
     # Get data in json format
     # text_id = request.json["text_id"]
-    date = request.json["date"]
-    author = request.json["author"]
-    source = request.json["source"]
-    collection = request.json["collection"]
+    name = request.json["name"]
+    version = request.json["version"]
     language = request.json["language"]
+    description = request.json["description"]
 
     # Use the function in model
-    c = Document.update_doc_data(id, date, author, source, collection, language)
+    c = Ontology.update_ont_data(ontology_id, name, version, language, description)
     
     # If the insert was successful, return the okey msg
     if c ==1:
@@ -95,29 +93,27 @@ def update_documents_data(id):
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: http://127.0.0.1:5000/documents/1
+# URL: http://127.0.0.1:5000/ontologies/1
 
 # JSON:
 # {
-#   "date":"02",
-#   "author":"bscsss",
-#   "source":"web",
-#   "collection":"cosssl2",
-#   "language":"es"
-# }
+# "name":"rteg",
+# "version":"24",
+# "language":"es",
+# "description":"3u34"}
 
 
-# Delete a document by id
+# Delete a ontology by id
 # --------------------------------------------------------------------
-@app.route("/documents/<string:id>", methods=['DELETE'])
-def delete_document_data(id):
+@app.route("/ontologies/<string:ontology_id>", methods=['DELETE'])
+def delete_ontology_data(ontology_id):
     # text_id = request.json["text_id"]
-    c = Document.delete_doc_data(id)
+    c = Ontology.delete_ont_data(ontology_id)
     
-    # If the document was deleted, return succes message, else error message
+    # If the ontology was deleted, return succes message, else error message
     if c==1:
         return jsonify("okey deleted")
     else:
-        return jsonify("no document deleted")
+        return jsonify("no ontology deleted")
 
-# Test with URL: http://127.0.0.1:5000/documents/5
+# Test with URL: http://127.0.0.1:5000/ontologies/5

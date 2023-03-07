@@ -5,6 +5,13 @@
 # Import
 import pymysql
 
+# Configparser settings
+import configparser
+parameters = config = configparser.ConfigParser()
+parameters.read('./configuration.cfg')
+
+
+
 # Function Get connection with database
 # -----------------------------------------------------------------------------------------
 
@@ -13,13 +20,20 @@ import pymysql
 #         return pymysql.connect( host='localhost', user= 'username', passwd='password', db='fct')
 
 def get_connection():
-        return pymysql.connect( host='localhost', user= 'username', passwd='password', db='fct')
+        # return pymysql.connect( host='localhost', user= 'username', passwd='password', db='fct')
+        return pymysql.connect( host=parameters['database']['host'], 
+                                user= parameters['database']['user'], 
+                                passwd= parameters['database']['password'], 
+                                db=parameters['database']['database'])
+
+
+
 
 # For testing here
 # -----------------------------------------------------------------------------------------
 conn = pymysql.connect( host='localhost', user= 'username', passwd='password', db='fct')
 
-# Cursor
+# Cursor        
 cursor = conn.cursor()
 
 # Select

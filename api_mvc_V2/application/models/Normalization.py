@@ -1,4 +1,4 @@
-# ------------------------ Document Model -----------------------------
+# ------------------------ Normalization Model -----------------------------
 # Manages all the petitions from the server
 
 # Imports
@@ -8,7 +8,7 @@ from application.config.database import get_connection # Import the database con
 
 # Function to select all documents from the database
 # --------------------------------------------------------------------------------
-def select_documents():
+def select_normalizations():
     # get connection    
     conexion = get_connection()
 
@@ -16,16 +16,16 @@ def select_documents():
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("select * from documents")
+        cursor.execute("select * from normalizations")
 
     # fetchall and return the data
         data = cursor.fetchall()
         return data
     
 
-# Function to select a document by id
+# Function to select a normalization by id
 # --------------------------------------------------------------------------------
-def select_where(textid):
+def select_where(norm_id):
     # get connection
     conexion = get_connection()
 
@@ -33,7 +33,7 @@ def select_where(textid):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("SELECT * FROM documents WHERE text_id = %s", textid)
+        cursor.execute("SELECT * FROM normalizations WHERE norm_id = %s", norm_id)
 
     # commit and close the connection
         data = cursor.fetchall()
@@ -42,7 +42,7 @@ def select_where(textid):
 
 # Function to insert data in documents table
 # ---------------------------------------------------------------------------------
-def insert_doc_data(textid, date, author, source, collection, language):
+def insert_norm_data(norm_id, ontology_id, code_id, semantic_relation):
     '''Input parameters: data to insert in the table'''
 
     # get connection
@@ -52,15 +52,15 @@ def insert_doc_data(textid, date, author, source, collection, language):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("INSERT INTO documents(text_id, date, author, source, collection, language) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (textid, date, author, source, collection, language))
+        cursor.execute("INSERT INTO normalizations(norm_id, ontology_id, code_id, semantic_relation) VALUES (%s, %s, %s, %s)",
+                    (norm_id, ontology_id, code_id, semantic_relation))
 
     # commit and close the connection
     conexion.commit()
     conexion.close()
 
 
-def update_doc_data(textid, date, author, source, collection, language):
+def update_norm_data(norm_id, ontology_id, code_id, semantic_relation):
 
     # get connection
     conexion = get_connection()
@@ -69,8 +69,8 @@ def update_doc_data(textid, date, author, source, collection, language):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("UPDATE documents SET date=%s, author=%s, source=%s, collection=%s, language=%s WHERE text_id=%s",
-                    (date, author, source, collection, language, textid))
+        cursor.execute("UPDATE normalizations SET ontology_id=%s, code_id=%s, semantic_relation=%s WHERE norm_id=%s",
+                    (ontology_id, code_id, semantic_relation, norm_id))
 
     # commit and close the connection
     conexion.commit()
@@ -81,8 +81,8 @@ def update_doc_data(textid, date, author, source, collection, language):
 
 # To delete data in documents table
 # ---------------------------------------------------------------------------------
-def delete_doc_data(textid):
-    '''Input parameter: the id of the document to delete'''
+def delete_norm_data(norm_id):
+    '''Input parameter: the id of the normalization to delete'''
 
     # get connection
     connexion = get_connection()
@@ -91,7 +91,7 @@ def delete_doc_data(textid):
     with connexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("DELETE FROM documents WHERE text_id = %s", textid)
+        cursor.execute("DELETE FROM normalizations WHERE norm_id = %s", norm_id)
 
     # commit and close
     connexion.commit()

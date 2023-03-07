@@ -1,4 +1,4 @@
-# ------------------------ Document Model -----------------------------
+# ------------------------ Ontologies Model -----------------------------
 # Manages all the petitions from the server
 
 # Imports
@@ -8,7 +8,7 @@ from application.config.database import get_connection # Import the database con
 
 # Function to select all documents from the database
 # --------------------------------------------------------------------------------
-def select_documents():
+def select_ontologies():
     # get connection    
     conexion = get_connection()
 
@@ -16,16 +16,16 @@ def select_documents():
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("select * from documents")
+        cursor.execute("select * from ontologies")
 
     # fetchall and return the data
         data = cursor.fetchall()
         return data
     
 
-# Function to select a document by id
+# Function to select a ontology by id
 # --------------------------------------------------------------------------------
-def select_where(textid):
+def select_where(ontology_id):
     # get connection
     conexion = get_connection()
 
@@ -33,16 +33,16 @@ def select_where(textid):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("SELECT * FROM documents WHERE text_id = %s", textid)
+        cursor.execute("SELECT * FROM ontologies WHERE ontology_id = %s", ontology_id)
 
     # commit and close the connection
         data = cursor.fetchall()
         return data
 
 
-# Function to insert data in documents table
+# Function to insert data in ontologies table
 # ---------------------------------------------------------------------------------
-def insert_doc_data(textid, date, author, source, collection, language):
+def insert_ont_data(ontology_id, name, version, language, description):
     '''Input parameters: data to insert in the table'''
 
     # get connection
@@ -52,15 +52,15 @@ def insert_doc_data(textid, date, author, source, collection, language):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("INSERT INTO documents(text_id, date, author, source, collection, language) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (textid, date, author, source, collection, language))
+        cursor.execute("INSERT INTO ontologies(ontology_id, name, version, language, description) VALUES (%s, %s, %s, %s, %s)",
+                    (ontology_id, name, version, language, description))
 
     # commit and close the connection
     conexion.commit()
     conexion.close()
 
 
-def update_doc_data(textid, date, author, source, collection, language):
+def update_ont_data(ontology_id, name, version, language, description):
 
     # get connection
     conexion = get_connection()
@@ -69,8 +69,8 @@ def update_doc_data(textid, date, author, source, collection, language):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("UPDATE documents SET date=%s, author=%s, source=%s, collection=%s, language=%s WHERE text_id=%s",
-                    (date, author, source, collection, language, textid))
+        cursor.execute("UPDATE ontologies SET name=%s, version=%s, language=%s, description=%s WHERE ontology_id=%s",
+                    (name, version, language, description, ontology_id))
 
     # commit and close the connection
     conexion.commit()
@@ -81,8 +81,8 @@ def update_doc_data(textid, date, author, source, collection, language):
 
 # To delete data in documents table
 # ---------------------------------------------------------------------------------
-def delete_doc_data(textid):
-    '''Input parameter: the id of the document to delete'''
+def delete_ont_data(ontology_id):
+    '''Input parameter: the id of the ontology to delete'''
 
     # get connection
     connexion = get_connection()
@@ -91,7 +91,7 @@ def delete_doc_data(textid):
     with connexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("DELETE FROM documents WHERE text_id = %s", textid)
+        cursor.execute("DELETE FROM ontologies WHERE ontology_id = %s", ontology_id)
 
     # commit and close
     connexion.commit()
