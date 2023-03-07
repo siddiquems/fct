@@ -29,10 +29,26 @@ class FlaskTest(unittest.TestCase):
 
 
     # Check for Data returned
+    # def test_index_data(self):
+    #     tester = app.test_client(self)
+    #     response = tester.get("/documents")
+    #     self.assertTrue(b'bsc' in response.data) 
+
+    #     # Return ok!
+
+    # def test_index_data(self):
+    #     tester = app.test_client(self)
+    #     response = tester.delete("/documents/2")
+    #     self.assertEqual(response.content_type, "application/json")
+        # self.assertTrue(b'okey' in response.data) 
+
+        # Return ok!
+
     def test_index_data(self):
         tester = app.test_client(self)
-        response = tester.get("/documents")
-        self.assertTrue(b'bsc' in response.data) 
+        response = tester.delete("/corpus/2")
+        self.assertEqual(response.content_type, "application/json")
+        # self.assertTrue(b'okey' in response.data) 
 
         # Return ok!
 
