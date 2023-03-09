@@ -5,17 +5,17 @@ from flask import Flask,jsonify,request
 # Import documents model
 import application.models.Document as Document
 
-
+# Route to select all documents
+# -------------------------------------------------------------
 @app.route('/documents', methods=['GET'])
 def select_documents_data():
-    c = Document.select_documents()
 
-    # If the documents are available, show them. Otherwise error message
-    if c!=None:
+    try:
+        c = Document.select_documents()
+        # print("ok")
         return jsonify({"result":c})
-    else:
+    except:
         return jsonify({"result":"no data available"})
-    # return jsonify({"result":c})
 
 
 # Route to select a document by id
@@ -23,14 +23,12 @@ def select_documents_data():
 @app.route('/documents/<string:id>', methods=['GET'])
 def select_document_by_id(id):
     # text_id = request.json["text_id"]
-
-    c = Document.select_where(id)
-
+    try:
+        c = Document.select_where(id)
     # If the document data is available, return them
-    if c!=None:
         return jsonify({"result": c})
-    else:
-        
+    
+    except:
         return jsonify({"result":"no data"})
 
 
@@ -39,6 +37,7 @@ def select_document_by_id(id):
 @app.route('/documents', methods=['POST'])
 def insert_documents_data():
 
+    # try:
     # Get data in json format
     text_id = request.json["text_id"]
     date = request.json["date"]
@@ -76,22 +75,21 @@ def insert_documents_data():
 # ----------------------------------------------------------------------
 @app.route('/documents/<string:id>', methods=['PUT'])
 def update_documents_data(id):
+    try:
+        # Get data in json format
+        date = request.json["date"]
+        author = request.json["author"]
+        source = request.json["source"]
+        collection = request.json["collection"]
+        language = request.json["language"]
 
-    # Get data in json format
-    # text_id = request.json["text_id"]
-    date = request.json["date"]
-    author = request.json["author"]
-    source = request.json["source"]
-    collection = request.json["collection"]
-    language = request.json["language"]
-
-    # Use the function in model
-    c = Document.update_doc_data(id, date, author, source, collection, language)
+        # Use the function in model
+        c = Document.update_doc_data(id, date, author, source, collection, language)
     
     # If the insert was successful, return the okey msg
-    if c ==1:
-        return jsonify({"result":"okey updating data"})
-    else:
+    # if c ==1:
+        return jsonify({"result":"okey updating data","response":c})
+    except:
         return  jsonify({"result":"no update"})
 
 # Tests
@@ -111,13 +109,12 @@ def update_documents_data(id):
 # --------------------------------------------------------------------
 @app.route("/documents/<string:id>", methods=['DELETE'])
 def delete_document_data(id):
-    # text_id = request.json["text_id"]
-    c = Document.delete_doc_data(id)
-    
+
     # If the document was deleted, return succes message, else error message
-    if c==1:
+    try:
+        c = Document.delete_doc_data(id)
         return jsonify("okey deleted")
-    else:
+    except:
         return jsonify("no document deleted")
 
 # Test with URL: http://127.0.0.1:5000/documents/5

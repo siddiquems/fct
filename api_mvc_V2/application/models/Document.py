@@ -74,8 +74,8 @@ def update_doc_data(textid, date, author, source, collection, language):
 
     # commit and close the connection
     conexion.commit()
-    print(cursor.rowcount, "record(s) updated")
-    return cursor.rowcount
+    return(str(cursor.rowcount)+ " record(s) updated")
+    # return cursor.rowcount
     # conexion.close()
 
 
