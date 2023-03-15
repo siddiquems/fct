@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------#
-# File: Normalization Model
+# File: User Model
 # Description: Manages all the petitions from the server
 # Author : Siddique Muhammad
 # Date: 10/03/2023
