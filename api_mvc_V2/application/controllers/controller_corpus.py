@@ -1,19 +1,37 @@
+#----------------------------------------------------------------------------#
+# Corpus Controller
+#----------------------------------------------------------------------------#
+
+
+#----------------------------------------------------------------------------#
+# Imports
+#----------------------------------------------------------------------------#
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
 
+# Import Model for corpus
 import application.models.Corpus as Corpus
 
+
+# Route to select all corpus
+# -------------------------------------------------------------
 @app.route('/corpus', methods=['GET'])
 def select_corpus_data():
-    c = Corpus.select_corpus()
 
-    # If the documents are available, show them. Otherwise error message
-    if c!=None:
-        return jsonify({"result":c})
-    else:
+    # try to find all corpus, except error.
+    try:
+
+        # use the function in Corpus model
+        response = Corpus.select_corpus()
+
+        # return the corpus as the response
+        return jsonify({"result": "ok finding corpus", "response":response})
+    
+    except:
+        
+        # error message as the result
         return jsonify({"result":"no data available"})
-    # return jsonify({"result":c})
 
 
 # Route to select a document by id
@@ -38,26 +56,29 @@ def select_corpus_by_id(id):
 @app.route('/corpus', methods=['POST'])
 def insert_corpus_data():
 
-    # Get data in json format
-    corpus_id = request.json["corpus_id"]
-    corpus_name = request.json["corpus_name"]
-    labels = request.json["labels"]
-    description = request.json["description"]
-    version = request.json["version"]
-    n_docs = request.json["n_docs"]
+    # try to insert a corpus data, if not possible return an error message as a result
 
-    # Use the function in model
-    c = Corpus.insert_cor_data(corpus_id, corpus_name, labels, description, version, n_docs)
+    try:
+        # Get data in json format
+        corpus_id = request.json["corpus_id"]
+        corpus_name = request.json["corpus_name"]
+        labels = request.json["labels"]
+        description = request.json["description"]
+        version = request.json["version"]
+        n_docs = request.json["n_docs"]
+
+        # Use the function in model
+        result = Corpus.insert_cor_data(corpus_id, corpus_name, labels, description, version, n_docs)
+        
+        # If the insert was successful, return the okey msg
+        return jsonify({"result":"okey inserting data","response":result})
     
-    # If the insert was successful, return the okey msg
-    if c==1:
-        return jsonify({"result":"insert okey"})
-    else:
+    except:
         
         return jsonify({"result":"error inserting data"})
 
 
-# To test
+# -------- For testing this route: -------
 # URL: http://127.0.0.1:5000/corpus
 # Method: POST
 
@@ -69,31 +90,37 @@ def insert_corpus_data():
 #   "version":"2.0",
 #   "n_docs":"2"
 # }
+# -----------------------------------------
 
 
-# Route to update data in corpus table - OK
+# Route to update data in corpus table
 # ----------------------------------------------------------------------
 @app.route('/corpus/<string:corpus_id>', methods=['PUT'])
 def update_corpus_data(corpus_id):
+    '''
+    Input parameters: id of the corpus to update
+    '''
 
-    # Get data in json format
-    corpus_name = request.json["corpus_name"]
-    labels = request.json["labels"]
-    description = request.json["description"]
-    version = request.json["version"]
-    n_docs = request.json["n_docs"]
+    try:
+        # Get data in json format
+        corpus_name = request.json["corpus_name"]
+        labels = request.json["labels"]
+        description = request.json["description"]
+        version = request.json["version"]
+        n_docs = request.json["n_docs"]
 
-    # Use the function in model
-    c = Corpus.update_cor_data(corpus_id, corpus_name, labels, description, version, n_docs)
+        # Use the function in model
+        response = Corpus.update_cor_data(corpus_id, corpus_name, labels, description, version, n_docs)
+        
+        # If the insert was successful, return the okey msg
+        return jsonify({"result":"okey updating data","response":response})
     
-    # If the insert was successful, return the okey msg
-    if c ==1:
-        return jsonify({"result":"okey updating data"})
-    else:
+    except:
         return  jsonify({"result":"no update"})
+    
 
-# Test
-# 127.0.0.1:5000/corpus/12
+# -------- For testing this route: -------
+# URL: http://127.0.0.1:5000/corpus/12
 # Method = PUT
 
 # {
@@ -103,17 +130,78 @@ def update_corpus_data(corpus_id):
 #   "version":"2.0",
 #   "n_docs":"2"
 # }
+# -----------------------------------------
 
 
-# Delete a document by id
+# Route to delete data in corpus table
 # --------------------------------------------------------------------
 @app.route("/corpus/<string:corpusid>", methods=['DELETE'])
 def delete_corpus_data(corpusid):
-
-    c = Corpus.delete_cor_data(corpusid)
+    '''
+    Input parameters: id of the corpus to delete
+    '''
 
     # If the corpus was deleted, return succes message, else error message
-    if c==1:
-        return jsonify("okey deleted")
-    else:
-        return jsonify("no corpus deleted")
+    try:
+        # Use the function in model
+        result = Corpus.delete_cor_data(corpusid)
+        return jsonify({"result":"okey deleted"})
+    
+    except:
+        return jsonify({"result":"no document deleted"})
+    
+
+
+
+# Route to select documents in corpus
+# -----------------------------------------------------------------------
+@app.route("/documents-by-corpus/<string:corpusid>", methods=['GET'])
+def select_documents_corpus(corpusid):
+    '''
+    Input parameters: corpus id to search the documents of a specific corpus
+    '''
+
+    # Try to find all the documents of a specific corpus, except error.
+    try:
+
+        # Use the function in Corpus Model
+        result = Corpus.select_documents_by_corpus(corpusid)
+
+        # Return success message and the data found
+        return jsonify({"result": "okey finding documents", "response":result})
+
+    except:
+
+        # If error, return error message
+        return jsonify({"result":"no data found"})
+
+# To test
+# 127.0.0.1:5000/documents-by-corpus/13
+# Method GET
+
+
+# Route to select documents in corpus
+# -----------------------------------------------------------------------
+@app.route("/corpus-by-document/<string:textid>", methods=['GET'])
+def select_corpus_documents(textid):
+    '''
+    Input parameters: text id to search the corpus of a specific document
+    '''
+
+    # Try to find all the documents of a specific corpus, except error.
+    try:
+
+        # Use the function in Corpus Model
+        result = Corpus.select_corpus_by_document(textid)
+
+        # Return success message and the data found
+        return jsonify({"result": "okey finding corpus", "response":result})
+
+    except:
+
+        # If error, return error message
+        return jsonify({"result":"no data found"})
+
+# To test
+# 127.0.0.1:5000/corpus-by-document/1
+# Method GET

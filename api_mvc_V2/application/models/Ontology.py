@@ -55,9 +55,9 @@ def insert_ont_data(ontology_id, name, version, language, description):
         cursor.execute("INSERT INTO ontologies(ontology_id, name, version, language, description) VALUES (%s, %s, %s, %s, %s)",
                     (ontology_id, name, version, language, description))
 
-    # commit and close the connection
+    # commit and return message
     conexion.commit()
-    conexion.close()
+    return(str(cursor.rowcount)+ " record(s) updated")
 
 
 def update_ont_data(ontology_id, name, version, language, description):
@@ -72,11 +72,9 @@ def update_ont_data(ontology_id, name, version, language, description):
         cursor.execute("UPDATE ontologies SET name=%s, version=%s, language=%s, description=%s WHERE ontology_id=%s",
                     (name, version, language, description, ontology_id))
 
-    # commit and close the connection
+    # commit and return message
     conexion.commit()
-    print(cursor.rowcount, "record(s) updated")
-    return cursor.rowcount
-    # conexion.close()
+    return(str(cursor.rowcount)+ " record(s) inserted")
 
 
 # To delete data in documents table

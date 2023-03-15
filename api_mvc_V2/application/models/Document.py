@@ -1,14 +1,17 @@
-# ------------------------ Document Model -----------------------------
+# ------------------------------ Document Model ----------------------------------
 # Manages all the petitions from the server
 
 # Imports
 from pathlib import Path
-from application.config.database import get_connection # Import the database connection
+
+# Import the database connection configuration
+from application.config.database import get_connection 
 
 
 # Function to select all documents from the database
 # --------------------------------------------------------------------------------
 def select_documents():
+
     # get connection    
     conexion = get_connection()
 
@@ -25,7 +28,12 @@ def select_documents():
 
 # Function to select a document by id
 # --------------------------------------------------------------------------------
-def select_where(textid):
+def select_where(textid:str):
+    '''
+    Input parameters: 
+                    textid: id of the document to find
+    '''
+
     # get connection
     conexion = get_connection()
 
@@ -42,8 +50,16 @@ def select_where(textid):
 
 # Function to insert data in documents table
 # ---------------------------------------------------------------------------------
-def insert_doc_data(textid, date, author, source, collection, language):
-    '''Input parameters: data to insert in the table'''
+def insert_doc_data(textid:str, date:str, author:str, source:str, collection:str, language:str):
+    '''
+    Input parameters: 
+                    text id: id of the document to insert
+                    date: date of the document
+                    author : the author
+                    source: source of the document
+                    collection: collection of the document
+                    langauge: in which language the document is
+    '''
 
     # get connection
     conexion = get_connection()
@@ -55,12 +71,23 @@ def insert_doc_data(textid, date, author, source, collection, language):
         cursor.execute("INSERT INTO documents(text_id, date, author, source, collection, language) VALUES (%s, %s, %s, %s, %s, %s)",
                     (textid, date, author, source, collection, language))
 
-    # commit and close the connection
+    # commit and return message
     conexion.commit()
-    conexion.close()
+    return(str(cursor.rowcount)+ " record(s) updated")
 
 
-def update_doc_data(textid, date, author, source, collection, language):
+# Function to update data in documents table
+# ---------------------------------------------------------------------------------
+def update_doc_data(textid:str, date:str, author:str, source:str, collection:str, language:str):
+    '''
+    Input parameters: 
+                    text id: id of the document to update
+                    date: date of the document
+                    author : the author
+                    source: source of the document
+                    collection: collection of the document
+                    langauge: in which language the document is
+    '''
 
     # get connection
     conexion = get_connection()
@@ -72,11 +99,10 @@ def update_doc_data(textid, date, author, source, collection, language):
         cursor.execute("UPDATE documents SET date=%s, author=%s, source=%s, collection=%s, language=%s WHERE text_id=%s",
                     (date, author, source, collection, language, textid))
 
-    # commit and close the connection
+    # commit and return a message
     conexion.commit()
-    return(str(cursor.rowcount)+ " record(s) updated")
-    # return cursor.rowcount
-    # conexion.close()
+    return(str(cursor.rowcount)+ " record(s) inserted")
+
 
 
 # To delete data in documents table
@@ -93,6 +119,6 @@ def delete_doc_data(textid):
         # execute command
         cursor.execute("DELETE FROM documents WHERE text_id = %s", textid)
 
-    # commit and close
+    # commit and close connection
     connexion.commit()
     connexion.close

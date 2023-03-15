@@ -9,29 +9,30 @@ import application.models.Document as Document
 
 @app.route('/normalizations', methods=['GET'])
 def select_normalizations_data():
-    c = Normalization.select_normalizations()
 
-    # If the normalizations are available, show them. Otherwise error message
-    if c!=None:
-        return jsonify({"result":c})
-    else:
+    try:
+        response = Normalization.select_normalizations()
+
+        # If the normalizations are available, show them. Otherwise error message
+        return jsonify({"result": "ok finding normalizations", "response":response})
+    
+    except:
         return jsonify({"result":"no data available"})
-    # return jsonify({"result":c})
 
 
 # Route to select a document by id
 # -------------------------------------------------------------
 @app.route('/normalizations/<string:id>', methods=['GET'])
 def select_normalization_by_id(id):
-    # text_id = request.json["text_id"]
 
-    c = Normalization.select_where(id)
+    try:
+        result = Normalization.select_where(id)
 
     # If the normalization data is available, return them
-    if c!=None:
-        return jsonify({"result": c})
-    else:
-        
+        return jsonify({"result": result})
+    
+    except:
+
         return jsonify({"result":"no data"})
 
 
@@ -40,22 +41,22 @@ def select_normalization_by_id(id):
 @app.route('/normalizations', methods=['POST'])
 def insert_normalizations_data():
 
-    # Get data in json format
-    norm_id = request.json["norm_id"]
-    ontology_id = request.json["ontology_id"]
-    code_id = request.json["code_id"]
-    semantic_relation = request.json["semantic_relation"]
+    try:
+        # Get data in json format
+        norm_id = request.json["norm_id"]
+        ontology_id = request.json["ontology_id"]
+        code_id = request.json["code_id"]
+        semantic_relation = request.json["semantic_relation"]
 
-    # Use the function in model
-    c = Normalization.insert_norm_data(norm_id, ontology_id, code_id, semantic_relation)
-    
-    # If the insert was successful, return the okey msg
-    # if c==1:
-    #     return jsonify({"result":"insert okey"})
-    # else:
+        # Use the function in model
+        result = Normalization.insert_norm_data(norm_id, ontology_id, code_id, semantic_relation)
         
-    #     return jsonify({"result":"error inserting data"})
-    return jsonify({"result":"okey"})
+        # If the insert was successful, return the okey msg
+        return jsonify({"result":"okey inserting data","response":result})
+    
+    except:
+
+        return jsonify({"result":"okey"})
 
 # Tests
 # URL: http://127.0.0.1:5000/normalizations
@@ -75,18 +76,19 @@ def insert_normalizations_data():
 @app.route('/normalizations/<string:norm_id>', methods=['PUT'])
 def update_normalizations_data(norm_id):
 
-    # Get data in json format
-    ontology_id = request.json["ontology_id"]
-    code_id = request.json["code_id"]
-    semantic_relation = request.json["semantic_relation"]
+    try:
+        # Get data in json format
+        ontology_id = request.json["ontology_id"]
+        code_id = request.json["code_id"]
+        semantic_relation = request.json["semantic_relation"]
 
     # Use the function in model
-    c = Normalization.update_norm_data(norm_id, ontology_id, code_id, semantic_relation)
+        result = Normalization.update_norm_data(norm_id, ontology_id, code_id, semantic_relation)
     
-    # If the insert was successful, return the okey msg
-    if c ==1:
+        # If the insert was successful, return the okey msg
         return jsonify({"result":"okey updating data"})
-    else:
+    
+    except:
         return  jsonify({"result":"no update"})
 
 # Tests
@@ -106,13 +108,13 @@ def update_normalizations_data(norm_id):
 # --------------------------------------------------------------------
 @app.route("/normalizations/<string:norm_id>", methods=['DELETE'])
 def delete_normalization_data(norm_id):
-    # text_id = request.json["text_id"]
-    c = Normalization.delete_norm_data(norm_id)
+
+    try:
+        result = Normalization.delete_norm_data(norm_id)
     
-    # If the normalization was deleted, return succes message, else error message
-    if c==1:
+        # If the normalization was deleted, return succes message, else error message
         return jsonify("okey deleted")
-    else:
+    except:
         return jsonify("no normalization deleted")
 
 # Test with URL: http://127.0.0.1:5000/normalization/5

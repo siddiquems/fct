@@ -55,9 +55,9 @@ def insert_spec_data(specid, name, description):
         cursor.execute("INSERT INTO specialties(specialty_id, name, description) VALUES (%s, %s, %s)",
                     (specid, name, description))
 
-    # commit and close the connection
+    # commit and return message
     conexion.commit()
-    conexion.close()
+    return(str(cursor.rowcount)+ " record(s) updated")
 
 
 def update_spec_data(specialty_id, name, description):
@@ -72,11 +72,9 @@ def update_spec_data(specialty_id, name, description):
         cursor.execute("UPDATE specialties SET name=%s, description=%s WHERE specialty_id=%s",
                     (name, description, specialty_id))
 
-    # commit and close the connection
+    # commit and return message
     conexion.commit()
-    print(cursor.rowcount, "record(s) updated")
-    return cursor.rowcount
-    # conexion.close()
+    return(str(cursor.rowcount)+ " record(s) inserted")
 
 
 # To delete data in documents table

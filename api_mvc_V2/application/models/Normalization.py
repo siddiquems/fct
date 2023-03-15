@@ -55,9 +55,9 @@ def insert_norm_data(norm_id, ontology_id, code_id, semantic_relation):
         cursor.execute("INSERT INTO normalizations(norm_id, ontology_id, code_id, semantic_relation) VALUES (%s, %s, %s, %s)",
                     (norm_id, ontology_id, code_id, semantic_relation))
 
-    # commit and close the connection
+    # commit and return message
     conexion.commit()
-    conexion.close()
+    return(str(cursor.rowcount)+ " record(s) updated")
 
 
 def update_norm_data(norm_id, ontology_id, code_id, semantic_relation):

@@ -57,9 +57,9 @@ def insert_cor_data(corpus_id, corpus_name, labels, description, version, n_docs
         cursor.execute("INSERT INTO corpus(corpus_id, corpus_name, labels, description, version, n_docs) VALUES (%s, %s, %s, %s, %s, %s)",
                     (corpus_id, corpus_name, labels, description, version, n_docs))
     
-    # commit and close the connection
+    # commit and return message
     conexion.commit()
-    conexion.close()
+    return(str(cursor.rowcount)+ " record(s) updated")
 
 
 # Function to insert data in corpus table
@@ -77,10 +77,9 @@ def update_cor_data(corpus_id, corpus_name, labels, description, version, n_docs
         cursor.execute("UPDATE corpus SET corpus_name = %s, labels = %s, description = %s, version = %s, n_docs = %s WHERE corpus_id = %s",
                     (corpus_name, labels, description, version, n_docs, corpus_id))
     
-    # commit and return the connection
+    # commit and return message
     conexion.commit()
-    print(cursor.rowcount, "record(s) updated")
-    return cursor.rowcount
+    return(str(cursor.rowcount)+ " record(s) inserted")
 
 
 # To delete data in corpus table
@@ -100,3 +99,44 @@ def delete_cor_data(corpusid):
     # commit and close
     connexion.commit()
     connexion.close
+
+# To select documents data by corpus id
+# ---------------------------------------------------------------------------------
+def select_documents_by_corpus(corpusid):
+    '''
+    Input parameters: corpus id to search the documents of a specific corpus
+    '''
+
+    # get connection
+    conexion = get_connection()
+
+    # cursor
+    with conexion.cursor() as cursor:
+
+        # execute command
+        cursor.execute("select * from documents JOIN document_corpus ON documents.text_id =  document_corpus.text_id WHERE document_corpus.corpus_id=%s", corpusid)
+
+    # fetchall and return the data
+        data = cursor.fetchall()
+        return data
+    
+
+# To select corpus data by text id
+# ---------------------------------------------------------------------------------
+def select_corpus_by_document(textid):
+    '''
+    Input parameters: text id to search the corpus of a specific document
+    '''
+
+    # get connection
+    conexion = get_connection()
+
+    # cursor
+    with conexion.cursor() as cursor:
+
+        # execute command
+        cursor.execute("select * from corpus JOIN document_corpus ON corpus.corpus_id =  document_corpus.corpus_id WHERE document_corpus.text_id=%s", textid)
+
+    # fetchall and return the data
+        data = cursor.fetchall()
+        return data

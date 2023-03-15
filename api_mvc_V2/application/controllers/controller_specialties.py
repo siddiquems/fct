@@ -1,3 +1,11 @@
+#----------------------------------------------------------------------------#
+# Specialties Controller
+#----------------------------------------------------------------------------#
+
+
+#----------------------------------------------------------------------------#
+# Imports
+#----------------------------------------------------------------------------#
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
@@ -6,31 +14,35 @@ from flask import Flask,jsonify,request
 import application.models.Specialty as Specialty
 
 
+# Route to select all ontologies
+# ----------------------------------------------------------
 @app.route('/specialties', methods=['GET'])
 def select_specialties_data():
-    c = Specialty.select_specialties()
 
-    # If the specialties are available, show them. Otherwise error message
-    if c!=None:
-        return jsonify({"result":c})
-    else:
+    try:
+        response = Specialty.select_specialties()
+
+        # If the specialties are available, show them. Otherwise error message
+        return jsonify({"result": "ok finding specialties", "response":response})
+    
+    except:
+
         return jsonify({"result":"no data available"})
-    # return jsonify({"result":c})
 
 
-# Route to select a document by id
+# Route to select a specialty by id
 # -------------------------------------------------------------
 @app.route('/specialties/<string:id>', methods=['GET'])
 def select_specialty_by_id(id):
-    # text_id = request.json["text_id"]
 
-    c = Specialty.select_where(id)
+    try:
+        response = Specialty.select_where(id)
 
-    # If the document data is available, return them
-    if c!=None:
-        return jsonify({"result": c})
-    else:
-        
+        # If the document data is available, return them
+        return jsonify({"result": response})
+    
+    except:
+
         return jsonify({"result":"no data"})
 
 
@@ -39,18 +51,19 @@ def select_specialty_by_id(id):
 @app.route('/specialties', methods=['POST'])
 def insert_specialties_data():
 
-    # Get data in json format
-    specialty_id = request.json["specialty_id"]
-    name = request.json["name"]
-    description = request.json["description"]
+    try:
+        # Get data in json format
+        specialty_id = request.json["specialty_id"]
+        name = request.json["name"]
+        description = request.json["description"]
 
-    # Use the function in model
-    c = Specialty.insert_spec_data(specialty_id, name, description)
+        # Use the function in model
+        result = Specialty.insert_spec_data(specialty_id, name, description)
     
-    # If the insert was successful, return the okey msg
-    if c==1:
-        return jsonify({"result":"insert okey"})
-    else:
+        # If the insert was successful, return the okey msg
+        return jsonify({"result":"okey inserting data","response":result})
+    
+    except:
         
         return jsonify({"result":"error inserting data"})
 
@@ -60,32 +73,27 @@ def insert_specialties_data():
 
 # JSON:
 # {
-#   "text_id":5,
-#   "date":"02",
-#   "author":"bscsss",
-#   "source":"web",
-#   "collection":"cosssl2",
-#   "language":"es"
+#   
 # }
 
 
-# Route to insert data in documents table  - No funcionality
+# Route to insert data in specialties table
 # ----------------------------------------------------------------------
 @app.route('/specialties/<string:specialty_id>', methods=['PUT'])
 def update_specialties_data(specialty_id):
 
-    # Get data in json format
-    # text_id = request.json["text_id"]
-    name = request.json["name"]
-    description = request.json["description"]
+    try:
+        # Get data in json format
+        name = request.json["name"]
+        description = request.json["description"]
 
-    # Use the function in model
-    c = Specialty.update_spec_data(specialty_id,name, description)
+        # Use the function in model
+        response = Specialty.update_spec_data(specialty_id,name, description)
     
-    # If the update was successful, return the okey msg
-    if c ==1:
-        return jsonify({"result":"okey updating data"})
-    else:
+        # If the update was successful, return the okey msg
+        return jsonify({"result":"okey updating data","response":response})
+    
+    except:
         return  jsonify({"result":"no update"})
 
 # Tests
@@ -98,17 +106,18 @@ def update_specialties_data(specialty_id):
 # "description":"otros"}
 
 
-# Delete a document by id
+# Delete a specialty by id
 # --------------------------------------------------------------------
 @app.route("/specialties/<string:specialty_id>", methods=['DELETE'])
 def delete_specialty_data(specialty_id):
-    # text_id = request.json["text_id"]
-    c = Specialty.delete_spec_data(specialty_id)
-    
-    # If the document was deleted, return succes message, else error message
-    if c==1:
+
+    try:
+        result = Specialty.delete_spec_data(specialty_id)
+        
+        # If the document was deleted, return succes message, else error message
         return jsonify("okey deleted")
-    else:
+    
+    except:
         return jsonify("no specialty deleted")
 
 # Test with URL: http://127.0.0.1:5000/specialties/5

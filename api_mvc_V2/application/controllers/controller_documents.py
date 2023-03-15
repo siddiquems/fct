@@ -1,20 +1,39 @@
+#----------------------------------------------------------------------------#
+# File: Documents Controller
+# Description: Manages all the routes and data for the Documents table
+# Author : Siddique Muhammad
+# Date: 13/03/2023
+#----------------------------------------------------------------------------#
+
+
+#----------------------------------------------------------------------------#
+# Imports
+#----------------------------------------------------------------------------#
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
 
-# Import documents model
+# Import Model for documents
 import application.models.Document as Document
+
 
 # Route to select all documents
 # -------------------------------------------------------------
 @app.route('/documents', methods=['GET'])
 def select_documents_data():
 
+    # try to find all documents, except error.
     try:
-        c = Document.select_documents()
-        # print("ok")
-        return jsonify({"result":c})
+
+        # use the function in Document model
+        response = Document.select_documents()
+
+        # return the documents as the response
+        return jsonify({"result": "ok finding documents", "response":response})
+    
     except:
+
+        # error message as the result
         return jsonify({"result":"no data available"})
 
 
@@ -22,11 +41,16 @@ def select_documents_data():
 # -------------------------------------------------------------
 @app.route('/documents/<string:id>', methods=['GET'])
 def select_document_by_id(id):
-    # text_id = request.json["text_id"]
+    '''
+    Input parameters: id of the document to find
+    '''
+
+    # try to select a document by id except error
     try:
-        c = Document.select_where(id)
-    # If the document data is available, return them
-        return jsonify({"result": c})
+        document = Document.select_where(id)
+
+        # If the document data is available, return them
+        return jsonify({"result": "ok finding documents","response":document})
     
     except:
         return jsonify({"result":"no data"})
@@ -37,30 +61,30 @@ def select_document_by_id(id):
 @app.route('/documents', methods=['POST'])
 def insert_documents_data():
 
-    # try:
-    # Get data in json format
-    text_id = request.json["text_id"]
-    date = request.json["date"]
-    author = request.json["author"]
-    source = request.json["source"]
-    collection = request.json["collection"]
-    language = request.json["language"]
+    # try to insert a document data, if not possible return an error message as a result
+    try:
+        # Get data in json format
+        text_id = request.json["text_id"]
+        date = request.json["date"]
+        author = request.json["author"]
+        source = request.json["source"]
+        collection = request.json["collection"]
+        language = request.json["language"]
 
-    # Use the function in model
-    c = Document.insert_doc_data(text_id, date, author, source, collection, language)
+        # Use the function in model
+        result = Document.insert_doc_data(text_id, date, author, source, collection, language)
     
-    # If the insert was successful, return the okey msg
-    if c==1:
-        return jsonify({"result":"insert okey"})
-    else:
-        
+        # If the insert was successful, return the okey msg
+        return jsonify({"result":"okey inserting data","response":result})
+    
+    except:
         return jsonify({"result":"error inserting data"})
 
-# Tests
+# -------- For testing this route: -------
 # URL: http://127.0.0.1:5000/documents
 # Method: POST
 
-# JSON:
+# JSON example data:
 # {
 #   "text_id":5,
 #   "date":"02",
@@ -69,13 +93,20 @@ def insert_documents_data():
 #   "collection":"cosssl2",
 #   "language":"es"
 # }
+# -----------------------------------------
 
 
-# Route to insert data in documents table  - No funcionality
+# Route to update data in documents table
 # ----------------------------------------------------------------------
 @app.route('/documents/<string:id>', methods=['PUT'])
 def update_documents_data(id):
+    '''
+    Input parameters: id of the document to update
+    '''
+
+    # try to update a document's data except error
     try:
+
         # Get data in json format
         date = request.json["date"]
         author = request.json["author"]
@@ -84,18 +115,19 @@ def update_documents_data(id):
         language = request.json["language"]
 
         # Use the function in model
-        c = Document.update_doc_data(id, date, author, source, collection, language)
+        response = Document.update_doc_data(id, date, author, source, collection, language)
     
-    # If the insert was successful, return the okey msg
-    # if c ==1:
-        return jsonify({"result":"okey updating data","response":c})
+        # If the insert was successful, return the okey msg
+        return jsonify({"result":"okey updating data","response":response})
+    
     except:
         return  jsonify({"result":"no update"})
 
-# Tests
-# URL: http://127.0.0.1:5000/documents/1
+# -------- For testing this route: -------
+# URL: http://127.0.0.1:5000/documents/5
+# Method: PUT
 
-# JSON:
+# JSON data:
 # {
 #   "date":"02",
 #   "author":"bscsss",
@@ -103,18 +135,27 @@ def update_documents_data(id):
 #   "collection":"cosssl2",
 #   "language":"es"
 # }
+# -----------------------------------------
 
 
-# Delete a document by id
+# Route to delete data in documents table
 # --------------------------------------------------------------------
 @app.route("/documents/<string:id>", methods=['DELETE'])
 def delete_document_data(id):
+    '''
+    Input parameters: id of the document to delete
+    '''
 
     # If the document was deleted, return succes message, else error message
     try:
-        c = Document.delete_doc_data(id)
-        return jsonify("okey deleted")
+        # Use the function in model
+        result = Document.delete_doc_data(id)
+        return jsonify({"result":"okey deleted"})
+    
     except:
-        return jsonify("no document deleted")
+        return jsonify({"result":"no document deleted"})
 
+# -------- For testing this route: -------
 # Test with URL: http://127.0.0.1:5000/documents/5
+# Method: PUT
+# -----------------------------------------
