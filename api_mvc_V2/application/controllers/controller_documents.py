@@ -186,6 +186,9 @@ def select_documents_corpus(corpusid):
 
 # To test
 # 127.0.0.1:5000/documents-by-corpus/13
+# 127.0.0.1:5000/documents-by-corpus/14
+# 127.0.0.1:5000/documents-by-corpus/222
+
 # Method GET
 
 
@@ -214,4 +217,7 @@ def select_documents_specility(specialityid):
 
 # To test
 # 127.0.0.1:5000/documents-by-specility/1
+# 127.0.0.1:5000/documents-by-specility/2
+# 127.0.0.1:5000/documents-by-specility/3
+
 # Method GET

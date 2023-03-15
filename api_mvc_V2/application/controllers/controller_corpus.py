@@ -177,4 +177,7 @@ def select_corpus_documents(textid):
 
 # To test
 # 127.0.0.1:5000/corpus-by-document/1
+# 127.0.0.1:5000/corpus-by-document/10
+# 127.0.0.1:5000/corpus-by-document/2
+
 # Method GET

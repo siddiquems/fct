@@ -148,4 +148,7 @@ def select_specialties_documents(textid):
 
 # To test
 # 127.0.0.1:5000/specialties-by-document/1
+# 127.0.0.1:5000/specialties-by-document/5
+# 127.0.0.1:5000/specialties-by-document/10
+
 # Method GET
