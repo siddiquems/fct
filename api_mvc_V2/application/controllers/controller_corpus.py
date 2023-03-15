@@ -1,11 +1,15 @@
 #----------------------------------------------------------------------------#
-# Corpus Controller
+# File: Corpus Controller
+# Description: Manages all the routes and data for the Corpus table
+# Author : Siddique Muhammad
+# Date: 13/03/2023
 #----------------------------------------------------------------------------#
 
 
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
@@ -13,6 +17,10 @@ from flask import Flask,jsonify,request
 # Import Model for corpus
 import application.models.Corpus as Corpus
 
+
+#----------------------------------------------------------------------------#
+# Routes
+#----------------------------------------------------------------------------#
 
 # Route to select all corpus
 # -------------------------------------------------------------

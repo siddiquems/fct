@@ -9,6 +9,7 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
@@ -16,6 +17,10 @@ from flask import Flask,jsonify,request
 # Import Model for documents
 import application.models.Document as Document
 
+
+#----------------------------------------------------------------------------#
+# Routes
+#----------------------------------------------------------------------------#
 
 # Route to select all documents
 # -------------------------------------------------------------

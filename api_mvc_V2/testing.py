@@ -1,12 +1,18 @@
-# --------------------------- TESTING FILE--------------------------------------
-# File for testing functions, modules
+#----------------------------------------------------------------------------#
+# File: Testing
+# Description: This file is used for testing models funcionts and other functionalities of the application
+# Author : Siddique Muhammad
+# Date: 22/02/2023
+#----------------------------------------------------------------------------#
 
-# Import the modules
+
+#----------------------------------------------------------------------------#
+# Imports
+#----------------------------------------------------------------------------#
 import application.models.model as model
 from application.models.model import *
 
 # Tests
-
 # --------------- Testing model
 # OKK
 # insert_doc_data('5', '4', 'bsc', 'woljwc', 'col2', 'en')

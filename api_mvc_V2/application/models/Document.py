@@ -1,7 +1,15 @@
-# ------------------------------ Document Model ----------------------------------
-# Manages all the petitions from the server
+#----------------------------------------------------------------------------#
+# File: Document Model
+# Description: Manages all the petitions from the server
+# Author : Siddique Muhammad
+# Date: 21/02/2023
+#----------------------------------------------------------------------------#
 
+
+#----------------------------------------------------------------------------#
 # Imports
+#----------------------------------------------------------------------------#
+
 from pathlib import Path
 
 # Import the database connection configuration

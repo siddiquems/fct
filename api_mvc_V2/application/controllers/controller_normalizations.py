@@ -1,15 +1,33 @@
+#----------------------------------------------------------------------------#
+# File: Normalizations Controller
+# Description: Manages all the routes and data for the Normalizations table
+# Author : Siddique Muhammad
+# Date: 13/03/2023
+#----------------------------------------------------------------------------#
+
+
+#----------------------------------------------------------------------------#
+# Imports
+#----------------------------------------------------------------------------#
+
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
-from application.models import Normalization
 
 # Import documents model
-import application.models.Document as Document
+from application.models import Normalization
 
 
+#----------------------------------------------------------------------------#
+# Routes
+#----------------------------------------------------------------------------#
+
+# Route to select all normalizations
+# -------------------------------------------------------------
 @app.route('/normalizations', methods=['GET'])
 def select_normalizations_data():
 
+    # try to find all normalizations, except error.
     try:
         response = Normalization.select_normalizations()
 

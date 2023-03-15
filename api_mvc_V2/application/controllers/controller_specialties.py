@@ -1,11 +1,15 @@
 #----------------------------------------------------------------------------#
-# Specialties Controller
+# File: Specialties Controller
+# Description: Manages all the routes and data for the Specialties table
+# Author : Siddique Muhammad
+# Date: 13/03/2023
 #----------------------------------------------------------------------------#
 
 
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
@@ -13,6 +17,11 @@ from flask import Flask,jsonify,request
 # Import documents model
 import application.models.Specialty as Specialty
 
+
+
+#----------------------------------------------------------------------------#
+# Routes
+#----------------------------------------------------------------------------#
 
 # Route to select all ontologies
 # ----------------------------------------------------------

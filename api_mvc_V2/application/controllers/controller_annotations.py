@@ -1,11 +1,15 @@
 #----------------------------------------------------------------------------#
-# Annotations Controller
+# File: Annotations Controller
+# Description: Manages all the routes and data for the Annotations table
+# Author : Siddique Muhammad
+# Date: 13/03/2023
 #----------------------------------------------------------------------------#
 
 
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
@@ -14,6 +18,12 @@ from flask import Flask,jsonify,request
 import application.models.Annotation as Annotation
 
 
+#----------------------------------------------------------------------------#
+# Routes
+#----------------------------------------------------------------------------#
+
+# Route to select all annotations
+# ----------------------------------------------------------
 @app.route('/annotations', methods=['GET'])
 def select_annotations_data():
 

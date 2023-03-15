@@ -1,11 +1,15 @@
 #----------------------------------------------------------------------------#
-# Ontologies Controller
+# File: Ontologies Controller
+# Description: Manages all the routes and data for the Ontologies table
+# Author : Siddique Muhammad
+# Date: 13/03/2023
 #----------------------------------------------------------------------------#
 
 
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
+
 # Import Flask modules
 from application import app
 from flask import Flask,jsonify,request
@@ -13,6 +17,10 @@ from flask import Flask,jsonify,request
 # Import documents model
 import application.models.Ontology as Ontology
 
+
+#----------------------------------------------------------------------------#
+# Routes
+#----------------------------------------------------------------------------#
 
 # Route to select all ontologies
 # ----------------------------------------------------------
