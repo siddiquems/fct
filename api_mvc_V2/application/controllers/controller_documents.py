@@ -159,3 +159,59 @@ def delete_document_data(id):
 # Test with URL: http://127.0.0.1:5000/documents/5
 # Method: PUT
 # -----------------------------------------
+
+
+# Route to select documents in corpus
+# Return documents
+# -----------------------------------------------------------------------
+@app.route("/documents-by-corpus/<string:corpusid>", methods=['GET'])
+def select_documents_corpus(corpusid):
+    '''
+    Input parameters: corpus id to search the documents of a specific corpus
+    '''
+
+    # Try to find all the documents of a specific corpus, except error.
+    try:
+
+        # Use the function in Document Model
+        result = Document.select_documents_by_corpus(corpusid)
+
+        # Return success message and the data found
+        return jsonify({"result": "okey finding documents", "response":result})
+
+    except:
+
+        # If error, return error message
+        return jsonify({"result":"no data found"})
+
+# To test
+# 127.0.0.1:5000/documents-by-corpus/13
+# Method GET
+
+
+# Route to select documents in specialty
+# Return documents
+# -----------------------------------------------------------------------
+@app.route("/documents-by-specility/<string:specialityid>", methods=['GET'])
+def select_documents_specility(specialityid):
+    '''
+    Input parameters: specility id to search the documents of a specific specility
+    '''
+
+    # Try to find all the documents of a specific specility, except error.
+    try:
+
+        # Use the function in Document Model
+        result = Document.select_documents_by_specialty(specialityid)
+
+        # Return success message and the data found
+        return jsonify({"result": "okey finding documents", "response":result})
+
+    except:
+    
+        # If error, return error message
+        return jsonify({"result":"no data found"})
+
+# To test
+# 127.0.0.1:5000/documents-by-specility/1
+# Method GET

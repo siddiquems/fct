@@ -121,3 +121,31 @@ def delete_specialty_data(specialty_id):
         return jsonify("no specialty deleted")
 
 # Test with URL: http://127.0.0.1:5000/specialties/5
+
+
+# Route to select specialties in document
+# Return specialties.
+# -----------------------------------------------------------------------
+@app.route("/specialties-by-document/<string:textid>", methods=['GET'])
+def select_specialties_documents(textid):
+    '''
+    Input parameters: text id to search the specialties of a specific document
+    '''
+
+    # Try to find all the specialties of a specific document, except error.
+    try:
+
+        # Use the function in Specialty Model
+        result = Specialty.select_specialties_by_document(textid)
+
+        # Return success message and the data found
+        return jsonify({"result": "okey", "response":result})
+
+    except:
+
+        # If error, return error message
+        return jsonify({"result":"no data found"})
+
+# To test
+# 127.0.0.1:5000/specialties-by-document/1
+# Method GET

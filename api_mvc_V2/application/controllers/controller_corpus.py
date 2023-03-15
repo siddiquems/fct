@@ -93,7 +93,7 @@ def insert_corpus_data():
 # -----------------------------------------
 
 
-# Route to update data in corpus table
+# Route to update data in corpus table. 
 # ----------------------------------------------------------------------
 @app.route('/corpus/<string:corpus_id>', methods=['PUT'])
 def update_corpus_data(corpus_id):
@@ -152,35 +152,8 @@ def delete_corpus_data(corpusid):
     
 
 
-
-# Route to select documents in corpus
-# -----------------------------------------------------------------------
-@app.route("/documents-by-corpus/<string:corpusid>", methods=['GET'])
-def select_documents_corpus(corpusid):
-    '''
-    Input parameters: corpus id to search the documents of a specific corpus
-    '''
-
-    # Try to find all the documents of a specific corpus, except error.
-    try:
-
-        # Use the function in Corpus Model
-        result = Corpus.select_documents_by_corpus(corpusid)
-
-        # Return success message and the data found
-        return jsonify({"result": "okey finding documents", "response":result})
-
-    except:
-
-        # If error, return error message
-        return jsonify({"result":"no data found"})
-
-# To test
-# 127.0.0.1:5000/documents-by-corpus/13
-# Method GET
-
-
-# Route to select documents in corpus
+# Route to select corpus in document
+# Return corpus.
 # -----------------------------------------------------------------------
 @app.route("/corpus-by-document/<string:textid>", methods=['GET'])
 def select_corpus_documents(textid):

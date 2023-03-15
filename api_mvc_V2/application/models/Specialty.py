@@ -94,3 +94,24 @@ def delete_spec_data(specialtyid):
     # commit and close
     connexion.commit()
     connexion.close
+
+
+# To select specilties data by text id
+# ---------------------------------------------------------------------------------
+def select_specialties_by_document(textid):
+    '''
+    Input parameters: text id to search the specialties of a specific document
+    '''
+
+    # get connection
+    conexion = get_connection()
+
+    # cursor
+    with conexion.cursor() as cursor:
+
+        # execute command
+        cursor.execute("select * from specialties JOIN document_specialities ON specialties.specialty_id =  document_specialities.specialty_id WHERE document_specialities.text_id=%s", textid)
+
+    # fetchall and return the data
+        data = cursor.fetchall()
+        return data

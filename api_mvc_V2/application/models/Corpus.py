@@ -100,27 +100,7 @@ def delete_cor_data(corpusid):
     connexion.commit()
     connexion.close
 
-# To select documents data by corpus id
-# ---------------------------------------------------------------------------------
-def select_documents_by_corpus(corpusid):
-    '''
-    Input parameters: corpus id to search the documents of a specific corpus
-    '''
-
-    # get connection
-    conexion = get_connection()
-
-    # cursor
-    with conexion.cursor() as cursor:
-
-        # execute command
-        cursor.execute("select * from documents JOIN document_corpus ON documents.text_id =  document_corpus.text_id WHERE document_corpus.corpus_id=%s", corpusid)
-
-    # fetchall and return the data
-        data = cursor.fetchall()
-        return data
     
-
 # To select corpus data by text id
 # ---------------------------------------------------------------------------------
 def select_corpus_by_document(textid):
