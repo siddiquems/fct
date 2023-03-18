@@ -166,7 +166,7 @@ def select_documents_by_specialty(specialityid):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("select * from documents JOIN document_specialities ON documents.text_id =  document_specialities.text_id WHERE document_specialities.specialty_id=%s", specialityid)
+        cursor.execute("select * from documents JOIN document_specialties ON documents.text_id =  document_specialties.text_id WHERE document_specialties.specialty_id=%s", specialityid)
 
     # fetchall and return the data
         data = cursor.fetchall()

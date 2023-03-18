@@ -35,7 +35,6 @@ def select_ontologies_data():
     
     except:
         return jsonify({"result":"no data available"})
-    # return jsonify({"result":c})
 
 
 # Route to select a ontology by id
@@ -50,7 +49,6 @@ def select_ontology_by_id(ontology_id):
         return jsonify({"result": result})
 
     except:
-        
         return jsonify({"result":"no data"})
 
 
@@ -83,11 +81,16 @@ def insert_ontologies_data():
 
 # JSON:
 # {
-#   
+#   "ontology_id":7,
+#   "name":"name5",
+#   "version":"1.34",
+#   "language":"en",
+#   "description":"desc05"
 # }
 
 
-# Route to insert data in ontologies table 
+
+# Route to update data in ontologies table 
 # ----------------------------------------------------------------------
 @app.route('/ontologies/<string:ontology_id>', methods=['PUT'])
 def update_ontologies_data(ontology_id):
@@ -109,14 +112,15 @@ def update_ontologies_data(ontology_id):
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: http://127.0.0.1:5000/ontologies/1
+# URL: http://127.0.0.1:5000/ontologies/7
 
 # JSON:
 # {
-# "name":"rteg",
-# "version":"24",
-# "language":"es",
-# "description":"3u34"}
+#   "name":"name7",
+#   "version":"1.34",
+#   "language":"en",
+#   "description":"desc05"
+# }
 
 
 # Delete a ontology by id
@@ -128,9 +132,42 @@ def delete_ontology_data(ontology_id):
         result = Ontology.delete_ont_data(ontology_id)
     
         # If the ontology was deleted, return succes message, else error message
-        return jsonify("okey deleted")
+        return jsonify({"result":"okey deleting data"})
 
     except:
-        return jsonify("no ontology deleted")
+        return  jsonify({"result":"no ontology deleted"})
 
-# Test with URL: http://127.0.0.1:5000/ontologies/5
+# Test with URL: 127.0.0.1:5000/ontologies/7
+# Method : DELETE
+
+
+# Route to select ontologies in ontology_descriptors
+# Return ontologies
+# -----------------------------------------------------------------------
+@app.route("/ontologies-by-descriptor/<string:codeid>", methods=['GET'])
+def select_ontologies_descriptor(codeid):
+    '''
+    Input parameters: code_id to search the ontologies of a specific ontology descriptor
+    code_id is the identifier of a ontology_descriptor
+    '''
+
+    # Try to find all the ontologies of a specific descriptor, except error.
+    try:
+
+        # Use the function in Ontology Model
+        result = Ontology.select_ontologies_by_descriptor(codeid)
+
+        # Return success message and the data found
+        return jsonify({"result": "okey finding ontologies", "response":result})
+
+    except:
+
+        # If error, return error message
+        return jsonify({"result":"no data found"})
+
+# To test
+# 127.0.0.1:5000/ontologies-by-descriptor/1
+# 127.0.0.1:5000/ontologies-by-descriptor/3
+# 127.0.0.1:5000/ontologies-by-descriptor/4
+
+# Method GET

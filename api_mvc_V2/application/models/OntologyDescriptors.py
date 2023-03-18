@@ -1,8 +1,8 @@
 #----------------------------------------------------------------------------#
-# File: Ontology Model
+# File: Ontology Descriptor Model
 # Description: Manages all the petitions from the server
 # Author : Siddique Muhammad
-# Date: 13/03/2023
+# Date: 16/03/2023
 #----------------------------------------------------------------------------#
 
 
@@ -13,9 +13,9 @@ from pathlib import Path
 from application.config.database import get_connection # Import the database connection
 
 
-# Function to select all ontoologies from the database
+# Function to select all ontology_descriptors from the database
 # --------------------------------------------------------------------------------
-def select_ontologies():
+def select_ontology_descriptors():
     # get connection    
     conexion = get_connection()
 
@@ -23,16 +23,16 @@ def select_ontologies():
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("select * from ontologies")
+        cursor.execute("select * from ontology_descriptors")
 
     # fetchall and return the data
         data = cursor.fetchall()
         return data
     
 
-# Function to select a ontology by id
+# Function to select a ontology descriptor by id
 # --------------------------------------------------------------------------------
-def select_where(ontology_id):
+def select_where(descriptor_id):
     # get connection
     conexion = get_connection()
 
@@ -40,16 +40,16 @@ def select_where(ontology_id):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("SELECT * FROM ontologies WHERE ontology_id = %s", ontology_id)
+        cursor.execute("SELECT * FROM ontology_descriptors WHERE descriptor_id = %s", descriptor_id)
 
     # commit and close the connection
         data = cursor.fetchall()
         return data
 
 
-# Function to insert data in ontologies table
+# Function to insert data in ontology descriptors table
 # ---------------------------------------------------------------------------------
-def insert_ont_data(ontology_id, name, version, language, description):
+def insert_ont_desc_data(code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type):
     '''Input parameters: data to insert in the table'''
 
     # get connection
@@ -59,17 +59,17 @@ def insert_ont_data(ontology_id, name, version, language, description):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("INSERT INTO ontologies(ontology_id, name, version, language, description) VALUES (%s, %s, %s, %s, %s)",
-                    (ontology_id, name, version, language, description))
+        cursor.execute("INSERT INTO ontology_descriptors(code_id, descriptor_id, ontology_id, code_id, descriptor, semantic_label, language, term_type) VALUES (%s, %s, %s, %s, %s)",
+                    (code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type))
 
     # commit and return message
     conexion.commit()
     return(str(cursor.rowcount)+ " record(s) updated")
 
 
-# Function to update data in ontologies table
+# Function to update data in ontology descriptors table
 # ---------------------------------------------------------------------------------
-def update_ont_data(ontology_id, name, version, language, description):
+def update_ont_desc_data(descriptor_id, ontology_id, code_id, descriptor, semantic_label, language, term_type):
 
     # get connection
     conexion = get_connection()
@@ -78,18 +78,18 @@ def update_ont_data(ontology_id, name, version, language, description):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("UPDATE ontologies SET name=%s, version=%s, language=%s, description=%s WHERE ontology_id=%s",
-                    (name, version, language, description, ontology_id))
+        cursor.execute("UPDATE ontology_descriptors SET ontology_id=%s, code_id=%s, descriptor=%s, semantic_label=%s, language=%s, term_type=%s WHERE descriptor_id=%s",
+                    (ontology_id, code_id, descriptor, semantic_label, language, term_type, descriptor_id))
 
     # commit and return message
     conexion.commit()
     return(str(cursor.rowcount)+ " record(s) inserted")
 
 
-# To delete data in ontologies table
+# To delete data in ontology_descriptors table
 # ---------------------------------------------------------------------------------
-def delete_ont_data(ontology_id):
-    '''Input parameter: the id of the ontology to delete'''
+def delete_ont_data(descriptor_id):
+    '''Input parameter: the id of the ontology descriptor to delete'''
 
     # get connection
     connexion = get_connection()
@@ -98,18 +98,18 @@ def delete_ont_data(ontology_id):
     with connexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("DELETE FROM ontologies WHERE ontology_id = %s", ontology_id)
+        cursor.execute("DELETE FROM ontology_descriptors WHERE descriptor_id = %s", descriptor_id)
 
     # commit and close
     connexion.commit()
     connexion.close
 
 
-# To select ontologies data by code_id
+# To select ontology_descriptors data by ontology_id
 # ---------------------------------------------------------------------------------
-def select_ontologies_by_descriptor(code_id):
+def select_descriptors_by_ontology(ontologyid):
     '''
-    Input parameters: code id (identifier of ontology_descriptor) to search the ontologies of a specific ontology descriptor
+    Input parameters: ontology id (identifier of ontology) to search the descriptors of a specific ontology
     '''
 
     # get connection
@@ -119,11 +119,7 @@ def select_ontologies_by_descriptor(code_id):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("select * from ontologies JOIN ontology_ontology_descriptors ON ontologies.ontology_id =  ontology_ontology_descriptors.ontology_id WHERE ontology_ontology_descriptors.code_id=%s", code_id)
-
-        # Alternative
-        # select * from ontologies join ontology_descriptors ON ontologies.ontology_id = ontology_descriptors.ontology_id where code_id = 1;
-
+        cursor.execute("select * from ontology_descriptors JOIN ontology_ontology_descriptors ON ontology_descriptors.code_id =  ontology_ontology_descriptors.code_id WHERE ontology_ontology_descriptors.ontology_id=%s", ontologyid)
 
     # fetchall and return the data
         data = cursor.fetchall()

@@ -49,7 +49,7 @@ def insert_annotations_data():
     try:
         # Get data in json format
         ann_id = request.json["ann_id"]
-        corpus_is = request.json["corpus_is"]
+        corpus_id = request.json["corpus_id"]
         text_id = request.json["text_id"]
         ann_text = request.json["ann_text"]
         start_span = request.json["start_span"]
@@ -59,7 +59,7 @@ def insert_annotations_data():
         mark = request.json["mark"]
 
         # Use the function in model
-        result = Annotation.insert_ann_data(ann_id, corpus_is, text_id, ann_text, start_span, end_span, norm_id, attributes, mark)
+        result = Annotation.insert_ann_data(ann_id, corpus_id, text_id, ann_text, start_span, end_span, norm_id, attributes, mark)
         
         # If the insert was successful, return the okey msg
         return jsonify({"result":"insert okey", "response":result})
@@ -72,8 +72,15 @@ def insert_annotations_data():
 # Method: POST
 
 # JSON:
-# {
-
+# {"ann_id":7,
+# "corpus_id":1,
+# "text_id":2,
+# "ann_text":"ann43",
+# "start_span":1,
+# "end_span":3,
+# "norm_id":2,
+# "attributes":"attr1",
+# "mark":"fefe"
 # }
 
 
@@ -81,10 +88,10 @@ def insert_annotations_data():
 # ----------------------------------------------------------------------
 @app.route('/annotations/<string:id>', methods=['PUT'])
 def update_annotations_data(id):
+
     try:
         # Get data in json format
-        ann_id = request.json["ann_id"]
-        corpus_is = request.json["corpus_is"]
+        corpus_id = request.json["corpus_id"]
         text_id = request.json["text_id"]
         ann_text = request.json["ann_text"]
         start_span = request.json["start_span"]
@@ -93,37 +100,41 @@ def update_annotations_data(id):
         attributes = request.json["attributes"]
         mark = request.json["mark"]
 
+
         # Use the function in model
-        c = Annotation.update_ann_data(ann_id, corpus_is, text_id, ann_text, start_span, end_span, norm_id, attributes, mark)
+        result = Annotation.update_ann_data(id, corpus_id, text_id, ann_text, start_span, end_span, norm_id, attributes, mark)
         
         # If the insert was successful, return the okey msg
-        return jsonify({"result":"okey updating data"})
+        return jsonify({"result":"okey updating data", "response":result})
     except:
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: http://127.0.0.1:5000/documents/1
+# URL: http://127.0.0.1:5000/annotations/6
 
 # JSON:
-# {
-#   "date":"02",
-#   "author":"bscsss",
-#   "source":"web",
-#   "collection":"cosssl2",
-#   "language":"es"
+# {"corpus_id":10,
+# "text_id":2,
+# "ann_text":"bbjeewk2",
+# "start_span":1,
+# "end_span":3,
+# "norm_id":2,
+# "attributes":"atWEDEtr1",
+# "mark":"fefe"
 # }
 
 
 # Delete a document by id
 # --------------------------------------------------------------------
-@app.route("/annotations/<string:annid>", methods=['DELETE'])
-def delete_annotation_data(annid):
+@app.route("/annotations/<string:id>", methods=['DELETE'])
+def delete_annotation_data(id):
     try:
-        result = Annotation.delete_ann_data(annid)
+        result = Annotation.delete_ann_data(id)
         
         # If the document was deleted, return succes message, else error message
         return jsonify("okey deleted")
     except:
         return jsonify("no annotation deleted")
 
-# Test with URL: http://127.0.0.1:5000/documents/5
+# Test
+# http://127.0.0.1:5000/annotations/16

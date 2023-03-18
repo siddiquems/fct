@@ -56,18 +56,21 @@ def insert_ann_data(ann_id, corpus_id, text_id, ann_text, start_span, end_span, 
 
 # Function to update data in annotations table
 # ---------------------------------------------------------------------------------
-def update_ann_data(ann_id, corpus_is, text_id, ann_text, start_span, end_span, norm_id, attributes, mark):
+def update_ann_data(ann_id, corpus_id, text_id, ann_text, start_span, end_span, norm_id, attributes, mark):
     '''Input parameters: data to insert in the table'''
 
     # get connection
     conexion = get_connection()
+
+    data = ann_id, corpus_id, text_id, ann_text, start_span, end_span, norm_id, attributes, mark
+    print(ann_id)
 
     # cursor
     with conexion.cursor() as cursor:
 
         # execute query
         cursor.execute("UPDATE annotations SET corpus_id = %s, text_id = %s, ann_text = %s, start_span = %s, end_span = %s, norm_id = %s, attributes = %s, mark = %s WHERE ann_id = %s",
-                    (corpus_is, text_id, ann_text, start_span, end_span, norm_id, attributes, mark, ann_id))
+                    (corpus_id, text_id, ann_text, start_span, end_span, norm_id, attributes, mark, ann_id))
     
     # commit and return message
     conexion.commit()
@@ -86,8 +89,9 @@ def delete_ann_data(annid):
     with connexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("DELETE FROM annnotations WHERE ann_id = %s", annid)
+        cursor.execute("DELETE FROM annotations WHERE ann_id = %s", annid)
 
     # commit and close
     connexion.commit()
     connexion.close
+

@@ -200,7 +200,7 @@ def select_documents_corpus(corpusid):
 # Route to select documents in specialty
 # Return documents
 # -----------------------------------------------------------------------
-@app.route("/documents-by-specility/<string:specialityid>", methods=['GET'])
+@app.route("/documents-by-specialty/<string:specialityid>", methods=['GET'])
 def select_documents_specility(specialityid):
     '''
     Input parameters: specility id to search the documents of a specific specility

@@ -38,7 +38,7 @@ def select_normalizations_data():
         return jsonify({"result":"no data available"})
 
 
-# Route to select a document by id
+# Route to select a normalization by id
 # -------------------------------------------------------------
 @app.route('/normalizations/<string:id>', methods=['GET'])
 def select_normalization_by_id(id):
@@ -47,14 +47,14 @@ def select_normalization_by_id(id):
         result = Normalization.select_where(id)
 
     # If the normalization data is available, return them
-        return jsonify({"result": result})
+        return jsonify({"result":"okey finding data", "response":result})
     
     except:
 
         return jsonify({"result":"no data"})
 
 
-# Route to insert data in documents table
+# Route to insert data in normalizations table
 # ----------------------------------------------------------------------
 @app.route('/normalizations', methods=['POST'])
 def insert_normalizations_data():
@@ -82,14 +82,14 @@ def insert_normalizations_data():
 
 # JSON:
 # {
-#   "norm_id":6,
-#   "ontology_id":"6",
-#   "code_id":"23424",
-#   "semantic_relation":"ceevklen"
-# }
+#    "norm_id":7,
+#    "ontology_id":5,
+#    "code_id":"1",
+#    "semantic_relation":"ceevklen"
+#  }
 
 
-# Route to insert data in normalizations table 
+# Route to update data in normalizations table 
 # ----------------------------------------------------------------------
 @app.route('/normalizations/<string:norm_id>', methods=['PUT'])
 def update_normalizations_data(norm_id):
@@ -110,19 +110,17 @@ def update_normalizations_data(norm_id):
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: http://127.0.0.1:5000/documents/1
+# URL: http://127.0.0.1:5000/normalizations/7
 
 # JSON:
 # {
-#   "date":"02",
-#   "author":"bscsss",
-#   "source":"web",
-#   "collection":"cosssl2",
-#   "language":"es"
-# }
+#    "ontology_id":6,
+#    "code_id":"1",
+#    "semantic_relation":"ceevklen"
+#  }
 
 
-# Delete a document by id
+# Delete a normalization by id
 # --------------------------------------------------------------------
 @app.route("/normalizations/<string:norm_id>", methods=['DELETE'])
 def delete_normalization_data(norm_id):
@@ -131,8 +129,9 @@ def delete_normalization_data(norm_id):
         result = Normalization.delete_norm_data(norm_id)
     
         # If the normalization was deleted, return succes message, else error message
-        return jsonify("okey deleted")
+        return jsonify({"result":"okey deleting data"})
     except:
-        return jsonify("no normalization deleted")
+        return  jsonify({"result":"no normalization deleted"})
 
-# Test with URL: http://127.0.0.1:5000/normalization/5
+# Test with URL: http://127.0.0.1:5000/normalization/7
+# Method : DELETE
