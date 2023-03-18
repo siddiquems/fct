@@ -68,6 +68,10 @@ def insert_descriptors_data():
         language = request.json["language"]
         term_type = request.json["term_type"]
         
+        data = code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type
+
+        print(data)
+
         # Use the function in model
         result = OntologyDescriptors.insert_ont_desc_data(code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type)
     
@@ -84,26 +88,32 @@ def insert_descriptors_data():
 
 # JSON:
 # {
-#   
+#   "code_id":"6",
+#   "descriptor_id":"6",
+#   "ontology_id":"6",
+#   "descriptor": "desc006",
+#   "semantic_label":"label06",
+#   "language":"es",
+#   "term_type":"type06"
 # }
 
 
 # Route to insert data in ontologies table 
 # ----------------------------------------------------------------------
-@app.route('/descriptors/<string:descriptor_id>', methods=['PUT'])
-def update_descriptor_data(descriptor_id):
+@app.route('/descriptors/<string:code_id>', methods=['PUT'])
+def update_descriptor_data(code_id):
 
     try:
         # Get data in json format
+        descriptor_id = request.json["descriptor_id"]
         ontology_id = request.json["ontology_id"]
-        code_id = request.json["code_id"]
         descriptor = request.json["descriptor"]
         semantic_label = request.json["semantic_label"]
         language = request.json["language"]
         term_type = request.json["term_type"]
 
         # Use the function in model
-        response = OntologyDescriptors.update_ont_desc_data(descriptor_id, ontology_id, code_id, descriptor, semantic_label, language, term_type)
+        response = OntologyDescriptors.update_ont_desc_data(code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type)
         
         # If the insert was successful, return the okey msg
         return jsonify({"result":"okey updating data","response":response})
@@ -112,31 +122,36 @@ def update_descriptor_data(descriptor_id):
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: http://127.0.0.1:5000/descriptors/1
+# URL: http://127.0.0.1:5000/descriptors/6
+# Method : PUT
 
 # JSON:
 # {
-# "name":"rteg",
-# "version":"24",
-# "language":"es",
-# "description":"3u34"}
+#   "descriptor_id":"6",
+#   "ontology_id":"6",
+#   "descriptor": "desc06",
+#   "semantic_label":"label06",
+#   "language":"es",
+#   "term_type":"type06"
+# }
 
 
 # Delete a ontology descriptor by id
 # --------------------------------------------------------------------
-@app.route("/descriptors/<string:descriptor_id>", methods=['DELETE'])
-def delete_descriptor_data(descriptor_id):
+@app.route("/descriptors/<string:code_id>", methods=['DELETE'])
+def delete_descriptor_data(code_id):
 
     try:
-        result = OntologyDescriptors.delete_ont_desc_data(descriptor_id)
+        result = OntologyDescriptors.delete_ont_desc_data(code_id)
     
         # If the ontology was deleted, return succes message, else error message
-        return jsonify("okey deleted")
+        return jsonify({"result":"okey deleted"})
 
     except:
-        return jsonify("no ontology deleted")
+        return jsonify({"result":"error deleting"})
 
-# Test with URL: http://127.0.0.1:5000/descriptors/5
+# Test with URL: http://127.0.0.1:5000/descriptors/6
+# Method : DELETE
 
 
 # Route to select ontologies in ontology_descriptors

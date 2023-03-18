@@ -110,16 +110,17 @@ def update_annotations_data(id):
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: http://127.0.0.1:5000/annotations/6
+# URL: http://127.0.0.1:5000/annotations/7
 
 # JSON:
-# {"corpus_id":10,
+# {
+# "corpus_id":1,
 # "text_id":2,
-# "ann_text":"bbjeewk2",
+# "ann_text":"ann7",
 # "start_span":1,
 # "end_span":3,
 # "norm_id":2,
-# "attributes":"atWEDEtr1",
+# "attributes":"attr1",
 # "mark":"fefe"
 # }
 
@@ -132,9 +133,9 @@ def delete_annotation_data(id):
         result = Annotation.delete_ann_data(id)
         
         # If the document was deleted, return succes message, else error message
-        return jsonify("okey deleted")
+        return jsonify({"result":"okey deleted"})
     except:
-        return jsonify("no annotation deleted")
+        return jsonify({"result":"error deleting"})
 
 # Test
-# http://127.0.0.1:5000/annotations/16
+# http://127.0.0.1:5000/annotations/7

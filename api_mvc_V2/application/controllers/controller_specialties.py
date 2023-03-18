@@ -82,7 +82,9 @@ def insert_specialties_data():
 
 # JSON:
 # {
-#   
+#   "specialty_id":6,
+#   "name":"medicina_familiar",
+#   "description":"about familiar medicine"
 # }
 
 
@@ -106,13 +108,14 @@ def update_specialties_data(specialty_id):
         return  jsonify({"result":"no update"})
 
 # Tests
-# URL: 127.0.0.1:5000/specialties/5
-# POST
+# URL: 127.0.0.1:5000/specialties/6
+# Method : POST
 
 # JSON:
 # {
-# "name":"errfe",
-# "description":"otros"}
+#   "name":"medicina_externa",
+#   "description":"about extern medicine"
+# }
 
 
 # Delete a specialty by id
@@ -124,10 +127,10 @@ def delete_specialty_data(specialty_id):
         result = Specialty.delete_spec_data(specialty_id)
         
         # If the document was deleted, return succes message, else error message
-        return jsonify("okey deleted")
+        return jsonify({"result":"okey deleted"})
     
     except:
-        return jsonify("no specialty deleted")
+        return jsonify({"result":"error deleting"})
 
 # Test with URL: http://127.0.0.1:5000/specialties/5
 

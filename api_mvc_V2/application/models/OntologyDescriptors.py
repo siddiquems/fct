@@ -59,7 +59,7 @@ def insert_ont_desc_data(code_id, descriptor_id, ontology_id, descriptor, semant
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("INSERT INTO ontology_descriptors(code_id, descriptor_id, ontology_id, code_id, descriptor, semantic_label, language, term_type) VALUES (%s, %s, %s, %s, %s)",
+        cursor.execute("INSERT INTO ontology_descriptors(code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                     (code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type))
 
     # commit and return message
@@ -69,7 +69,7 @@ def insert_ont_desc_data(code_id, descriptor_id, ontology_id, descriptor, semant
 
 # Function to update data in ontology descriptors table
 # ---------------------------------------------------------------------------------
-def update_ont_desc_data(descriptor_id, ontology_id, code_id, descriptor, semantic_label, language, term_type):
+def update_ont_desc_data(code_id, descriptor_id, ontology_id, descriptor, semantic_label, language, term_type):
 
     # get connection
     conexion = get_connection()
@@ -78,8 +78,8 @@ def update_ont_desc_data(descriptor_id, ontology_id, code_id, descriptor, semant
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("UPDATE ontology_descriptors SET ontology_id=%s, code_id=%s, descriptor=%s, semantic_label=%s, language=%s, term_type=%s WHERE descriptor_id=%s",
-                    (ontology_id, code_id, descriptor, semantic_label, language, term_type, descriptor_id))
+        cursor.execute("UPDATE ontology_descriptors SET descriptor_id = %s, ontology_id=%s, descriptor=%s, semantic_label=%s, language=%s, term_type=%s WHERE code_id=%s",
+                    (descriptor_id, ontology_id, descriptor, semantic_label, language, term_type, code_id))
 
     # commit and return message
     conexion.commit()
@@ -88,7 +88,7 @@ def update_ont_desc_data(descriptor_id, ontology_id, code_id, descriptor, semant
 
 # To delete data in ontology_descriptors table
 # ---------------------------------------------------------------------------------
-def delete_ont_data(descriptor_id):
+def delete_ont_desc_data(code_id):
     '''Input parameter: the id of the ontology descriptor to delete'''
 
     # get connection
@@ -98,7 +98,7 @@ def delete_ont_data(descriptor_id):
     with connexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("DELETE FROM ontology_descriptors WHERE descriptor_id = %s", descriptor_id)
+        cursor.execute("DELETE FROM ontology_descriptors WHERE code_id = %s", code_id)
 
     # commit and close
     connexion.commit()
