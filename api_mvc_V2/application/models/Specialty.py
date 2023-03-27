@@ -48,7 +48,7 @@ def select_where(specialty_id):
         return data
 
 
-# Function to insert data in documents table
+# Function to insert data in specialties table
 # ---------------------------------------------------------------------------------
 def insert_spec_data(specid, name, description):
     '''Input parameters: data to insert in the table'''
@@ -68,6 +68,8 @@ def insert_spec_data(specid, name, description):
     return(str(cursor.rowcount)+ " record(s) updated")
 
 
+# Function to update data in specialties table
+# ---------------------------------------------------------------------------------
 def update_spec_data(specialty_id, name, description):
     '''Input parameters: data to update in the table'''
     # get connection
@@ -123,3 +125,24 @@ def select_specialties_by_document(textid):
     # fetchall and return the data
         data = cursor.fetchall()
         return data
+    
+
+# Function to insert data in specialties table
+# ---------------------------------------------------------------------------------
+def insert_speczip_data(names):
+    '''Input parameters: data to insert in the table'''
+    print(names)
+    
+    # get connection
+    conexion = get_connection()
+
+    # cursor
+    with conexion.cursor() as cursor:
+
+        # execute command
+        cursor.execute("INSERT INTO specialties2(name) VALUES (%s)",
+                    (names[0]))
+
+    # commit and return message
+    conexion.commit()
+    return(str(cursor.rowcount)+ " record(s) updated")

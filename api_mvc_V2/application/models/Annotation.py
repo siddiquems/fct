@@ -95,3 +95,31 @@ def delete_ann_data(annid):
     connexion.commit()
     connexion.close
 
+
+
+
+# Function to insert data in annotations table
+# ---------------------------------------------------------------------------------
+def insert_annzip_data(ann_data):
+    '''Input parameters: data to insert in the table'''
+    print(ann_data)
+
+    ann_text = ann_data[1]
+    start_span = ann_data[2]
+    end_span = ann_data[3]
+    attributes = ann_data[4]
+    mark = ann_data[0]
+
+    # get connection
+    conexion = get_connection()
+
+    # cursor
+    with conexion.cursor() as cursor:
+
+        # execute query
+        cursor.execute("INSERT INTO annotations2(ann_text, start_span, end_span, attributes, mark) VALUES (%s, %s, %s, %s, %s)",
+                    (ann_text,start_span,end_span,attributes,mark))
+    
+    # commit and return message
+    conexion.commit()
+    return(str(cursor.rowcount)+ " record(s) updated")

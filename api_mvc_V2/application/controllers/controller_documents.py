@@ -14,8 +14,19 @@
 from application import app
 from flask import Flask,jsonify,request
 
-# Import Model for documents
+# Import Model for documents, annotations, specialties
 import application.models.Document as Document
+import application.models.Annotation as Annotation
+import application.models.Specialty as Specialty
+
+# Os module
+import os
+
+# Zip File Extraction
+from io import BytesIO
+import zipfile
+import tarfile
+import rarfile
 
 
 #----------------------------------------------------------------------------#
@@ -226,3 +237,180 @@ def select_documents_specility(specialityid):
 # 127.0.0.1:5000/documents-by-specility/3
 
 # Method GET
+
+
+# Route to upload a zip file in the server
+# -----------------------------------------------------------------------
+@app.route('/upload', methods=['POST'])
+def upload():
+
+    # Get the file and read it
+    file = request.files['file']
+    file_data = file.read()
+
+    # Determine the file type based on the file extension
+    file_extension = file.filename.split('.')[-1].lower()
+    
+    # Extract the files based on the file type
+    if file_extension == 'zip':
+        with zipfile.ZipFile(BytesIO(file_data)) as zip_file:
+            extract_files(zip_file)
+
+    elif file_extension == 'tar':
+        with tarfile.open(fileobj=BytesIO(file_data)) as tar_file:
+            extract_files(tar_file)
+
+    elif file_extension == 'rar':
+        with rarfile.RarFile(BytesIO(file_data)) as rar_file:
+            extract_files(rar_file)
+
+    else:
+        return 'Invalid file type'
+
+    return 'Success!'
+
+
+# Function to extract the file data and store in the database
+# -----------------------------------------------------------------------
+def extract_files(archive_file):
+    # print(archive_file.namelist())
+
+    # For files in a directory
+    for file_name in archive_file.namelist():
+        print(file_name)
+        # Check if the file is a directory or not
+        if os.path.isdir(file_name):
+
+            # Get the names and insert in database
+            manage_directory(file_name)
+            
+        # If it not a directory, get data from this files and insert:
+        elif os.path.isfile(file_name):
+
+            manage_file(file_name, archive_file)
+
+
+
+
+# Function to get data from the directories
+# ---------------------------------------------------------------
+def manage_directory(file_name):
+    print('The file is a directory')
+
+    names = os.path.split(file_name)
+
+    # Use the function in specialty_model to insert the specialty name in the database
+    # result = Specialty.insert_speczip_data(names)
+
+    # return ('result')
+
+    # print(name[0])
+
+
+# Function to get data from the directories
+# ---------------------------------------------------------------
+def manage_file(file_name, archive_file):
+    print('It is a file')
+    
+    # Check if the file is a txt or ann:
+    # If the file is a txt:
+    if file_name.endswith('.txt'):
+        print('es un txt')
+
+        # Get txt data
+        txt_data = manage_text(archive_file, file_name)
+        # print(txt_data)
+
+
+        # Store the data in the database
+        # Your code to store data in mysql database goes here
+
+    # If the file is an annotation file:
+    elif file_name.endswith('.ann'):
+        print('es un ann')
+
+        # Get annotation data and insert
+        ann_data = manage_annotations(archive_file, file_name)
+        result = Annotation.insert_annzip_data(ann_data)
+        # print(ann_data[4])
+
+
+
+# Function to parse the txt files data
+def manage_text(archive_file, file_name):
+    '''
+    Manages the txt files, extract the data in these files
+    - Input parameters: archive file is the file received
+                        file name is the name of all the files in the folder received
+    - Output parameters: data extracted from txt files.
+    '''
+    
+    # Open the archive file
+    with archive_file.open(file_name) as file:
+
+        # Read file data
+        file_data = file.read()
+
+        # Return the file data
+        return file_data
+
+
+# Function to parse the txt files data
+def manage_annotations(archive_file, file_name):
+    '''
+    Manages the annotation files, extract the data in these files
+    - Input parameters: archive file is the file received
+                        file name is the name of all the files in the folder received
+    - Output parameters: data extracted from annotation files.
+    '''
+
+    # Open the archive file
+    with archive_file.open(file_name) as file:
+            
+            # Readlines in the file
+            file_data = file.readlines()
+
+            # For each line, split and save
+            for lines in file_data:
+
+                # Split lines with \t
+                line = (lines.split(b'\t'))
+                # print(line[0])
+                mark = line[0]
+
+                text_span = line[1].split()
+                ann_text = text_span[0]
+                start_span = text_span[1]
+                end_span = text_span[2]
+
+                attributes = line[2]
+
+                return mark, ann_text, start_span, end_span, attributes
+            
+
+
+            # ----------------------------------------------------------
+                # for item in line:
+                #     text_spans = line[1].split()
+                #     print(text_spans)
+
+                # return 
+
+            # for line in file_data[0]:
+            #     line.split("\t")
+            # print(file_data[0])
+            # for line in file_data:
+            #     split_line = line.split(b',')
+
+            #     for item in split_line:
+            #         split_item = item.split(b'\t')
+
+            #         print(split_item[2])
+            # ----------------------------------------------------------
+
+
+
+
+
+# Test in terminal
+# curl -i -X POST -F name=prueba -F file=@file.zip "localhost:5000/upload"
