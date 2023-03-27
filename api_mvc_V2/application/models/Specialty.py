@@ -140,7 +140,7 @@ def insert_speczip_data(names):
     with conexion.cursor() as cursor:
 
         # execute command
-        cursor.execute("INSERT INTO specialties2(name) VALUES (%s)",
+        cursor.execute("INSERT INTO specialties(name) VALUES (%s)",
                     (names[0]))
 
     # commit and return message

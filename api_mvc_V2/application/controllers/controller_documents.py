@@ -277,7 +277,8 @@ def extract_files(archive_file):
 
     # For files in a directory
     for file_name in archive_file.namelist():
-        print(file_name)
+        # print(file_name)
+
         # Check if the file is a directory or not
         if os.path.isdir(file_name):
 
@@ -287,16 +288,18 @@ def extract_files(archive_file):
         # If it not a directory, get data from this files and insert:
         elif os.path.isfile(file_name):
 
+            # Manage files. Annotations and txt
             manage_file(file_name, archive_file)
 
 
 
 
-# Function to get data from the directories
+# Function to get data of the directoires and store in the database
 # ---------------------------------------------------------------
 def manage_directory(file_name):
     print('The file is a directory')
 
+    # Get specialty names
     names = os.path.split(file_name)
 
     # Use the function in specialty_model to insert the specialty name in the database
@@ -308,35 +311,48 @@ def manage_directory(file_name):
 
 
 # Function to get data from the directories
-# ---------------------------------------------------------------
+# -------------------------------------------------------------------------------------
 def manage_file(file_name, archive_file):
-    print('It is a file')
-    
+
+    print(' ')
+    print('This is a file')
+
+    file = file_name.split("/")
+
+
     # Check if the file is a txt or ann:
     # If the file is a txt:
     if file_name.endswith('.txt'):
-        print('es un txt')
+        print('-The file is a txt file')
 
-        # Get txt data
+        # Get data from txt files
         txt_data = manage_text(archive_file, file_name)
         # print(txt_data)
 
-
-        # Store the data in the database
-        # Your code to store data in mysql database goes here
+        # Insert the documents names in the database
+        res = Document.insert_doczip_data(file[1])
 
     # If the file is an annotation file:
     elif file_name.endswith('.ann'):
-        print('es un ann')
+        print('-The file is an annotation file')
 
         # Get annotation data and insert
         ann_data = manage_annotations(archive_file, file_name)
         result = Annotation.insert_annzip_data(ann_data)
-        # print(ann_data[4])
+
+        # To check
+        # print(ann_data[0:5])
+
+        # Insert the documents names in the database
+        res = Document.insert_doczip_data(file[1])
+
+    else:
+        print('-The file is not valid for this action')
 
 
 
 # Function to parse the txt files data
+# --------------------------------------------------------------------------------------
 def manage_text(archive_file, file_name):
     '''
     Manages the txt files, extract the data in these files
@@ -356,6 +372,7 @@ def manage_text(archive_file, file_name):
 
 
 # Function to parse the txt files data
+# --------------------------------------------------------------------------------------
 def manage_annotations(archive_file, file_name):
     '''
     Manages the annotation files, extract the data in these files
@@ -364,18 +381,26 @@ def manage_annotations(archive_file, file_name):
     - Output parameters: data extracted from annotation files.
     '''
 
+    file = file_name.split("/")
+    
+    # Get the text_id of the document
+    document_id = Document.select_documentid(file[1])
+
+    # print(document_id)
+
     # Open the archive file
     with archive_file.open(file_name) as file:
             
             # Readlines in the file
             file_data = file.readlines()
+            result = []
 
             # For each line, split and save
             for lines in file_data:
 
                 # Split lines with \t
                 line = (lines.split(b'\t'))
-                # print(line[0])
+
                 mark = line[0]
 
                 text_span = line[1].split()
@@ -384,33 +409,19 @@ def manage_annotations(archive_file, file_name):
                 end_span = text_span[2]
 
                 attributes = line[2]
+                text_id = document_id
 
-                return mark, ann_text, start_span, end_span, attributes
+                # Append the data in a list
+                # data = mark, ann_text, start_span, end_span, attributes
+                data = mark, ann_text, start_span, end_span, attributes, text_id
+
+                result.append(data)
+
+                # To check
+                # print(result)
             
+            return result
 
-
-            # ----------------------------------------------------------
-                # for item in line:
-                #     text_spans = line[1].split()
-                #     print(text_spans)
-
-                # return 
-
-            # for line in file_data[0]:
-            #     line.split("\t")
-            # print(file_data[0])
-            # for line in file_data:
-            #     split_line = line.split(b',')
-
-            #     for item in split_line:
-            #         split_item = item.split(b'\t')
-
-            #         print(split_item[2])
-            # ----------------------------------------------------------
-
-
-
-
-
+# ------------------------- For testing zip file -------------------------
 # Test in terminal
 # curl -i -X POST -F name=prueba -F file=@file.zip "localhost:5000/upload"
